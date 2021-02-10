@@ -2,7 +2,7 @@
 using System.Text;
 using ShapesTask.Shapes;
 
-namespace ShapesTask.Main
+namespace ShapesTask.Utils
 {
     class App
     {
