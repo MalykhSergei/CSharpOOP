@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace VectorTask
 {
@@ -6,36 +7,45 @@ namespace VectorTask
     {
         private double[] components;
 
-        public Vector(int n)
+        public Vector(int length)
         {
-            if (n <= 0)
+            if (length <= 0)
             {
-                throw new ArgumentException("Размерность вектора должна быть больше 0!");
+                string message = $"Length = {length}. It must be greater than 0!";
+                throw new ArgumentException(message, nameof(length));
             }
 
-            components = new double[n];
+            components = new double[length];
         }
 
         public Vector(Vector vector)
         {
-            components = vector.components;
+            components = new double[vector.components.Length];
+            vector.components.CopyTo(components, 0);
         }
 
         public Vector(double[] components)
         {
+            if (components.Length <= 0)
+            {
+                string message = $"Length = {components.Length}. It must be greater than 0!";
+                throw new ArgumentException(message, nameof(components.Length));
+            }
+
             this.components = new double[components.Length];
 
             components.CopyTo(this.components, 0);
         }
 
-        public Vector(int n, double[] components)
+        public Vector(int length, double[] components)
         {
-            if (n <= 0)
+            if (length <= 0)
             {
-                throw new ArgumentException("Размерность вектора должна быть больше 0!");
+                string message = $"Length = {length}. It must be greater than 0!";
+                throw new ArgumentException(message, nameof(length));
             }
 
-            this.components = new double[n];
+            this.components = new double[length];
 
             components.CopyTo(this.components, 0);
         }
@@ -49,18 +59,22 @@ namespace VectorTask
         {
             get
             {
-                if (index >= GetSize())
+                if (index >= GetSize() || index < 0)
                 {
-                    throw new ArgumentOutOfRangeException("Слишком большой индекс");
+                    string message = $"Index = {index}. It must be greater than or equal to 0 and less {GetSize()}";
+                    throw new ArgumentOutOfRangeException(message, nameof(index));
                 }
+
                 return components[index];
             }
             set
             {
-                if (index >= GetSize())
+                if (index >= GetSize() || index < 0)
                 {
-                    throw new ArgumentOutOfRangeException("Слишком большой индекс");
+                    string message = $"Index = {index}. It must be greater than or equal to 0 and less {GetSize()}";
+                    throw new ArgumentOutOfRangeException(message, nameof(index));
                 }
+
                 components[index] = value;
             }
         }
@@ -74,11 +88,11 @@ namespace VectorTask
 
             for (int i = 0; i < vector.components.Length; i++)
             {
-                components[i] += vector.components[i];
+                components[i] += vector[i];
             }
         }
 
-        public void Substract(Vector vector)
+        public void Subtract(Vector vector)
         {
             if (components.Length < vector.components.Length)
             {
@@ -87,11 +101,11 @@ namespace VectorTask
 
             for (int i = 0; i < vector.components.Length; i++)
             {
-                components[i] -= vector.components[i];
+                components[i] -= vector[i];
             }
         }
 
-        public void MultiplyScalar(double number)
+        public void MultiplyByScalar(double number)
         {
             for (int i = 0; i < components.Length; i++)
             {
@@ -101,7 +115,7 @@ namespace VectorTask
 
         public void Reverse()
         {
-            MultiplyScalar(-1);
+            MultiplyByScalar(-1);
         }
 
         public double GetLength()
@@ -110,57 +124,70 @@ namespace VectorTask
 
             foreach (double e in components)
             {
-                sum += Math.Pow(e, 2);
+                sum += e * e;
             }
 
             return Math.Sqrt(sum);
         }
 
-        public double GetElement(int index)
+        //public double GetElement(int index)
+        //{
+        //    return components[index];
+        //}
+
+        //public void SetElement(int index, double value)
+        //{
+        //    components[index] = value;
+        //}
+
+        public static Vector GetSum(Vector vector1, Vector vector2)
         {
-            return components[index];
+            Vector result = new Vector(vector1);
+
+            result.Add(vector2);
+
+            return result;
         }
 
-        public void SetElement(int index, double value)
+        public static Vector GetDifference(Vector vector1, Vector vector2)
         {
-            components[index] = value;
+            Vector result = new Vector(vector1);
+
+            result.Subtract(vector2);
+
+            return result;
         }
 
-        public static Vector GetVektorAddition(Vector vector1, Vector vector2)
+        public static double GetScalarProduct(Vector vector1, Vector vector2)
         {
-            Vector vector3 = new Vector(vector1);
+            int minLength = Math.Min(vector1.components.Length, vector2.components.Length);
 
-            vector3.Add(vector2);
+            double scalarProduct = 0;
 
-            return vector3;
-        }
-
-        public static Vector GetVektorDifference(Vector vector1, Vector vector2)
-        {
-            Vector vector3 = new Vector(vector1);
-
-            vector3.Substract(vector2);
-
-            return vector3;
-        }
-
-        public static double GetScalarMultiplication(Vector vector1, Vector vector2)
-        {
-            int min = Math.Min(vector1.components.Length, vector2.components.Length);
-
-            double scalar = 0;
-
-            for (int i = 0; i < min; i++)
+            for (int i = 0; i < minLength; i++)
             {
-                scalar += vector1.components[i] * vector2.components[i];
+                scalarProduct += vector1[i] * vector2[i];
             }
 
-            return scalar;
+            return scalarProduct;
         }
 
         public override string ToString()
         {
-            return string.Join(", ", components);
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("{");
+            sb.Append(components[0]);
+
+            for (int i = 1; i < components.Length; i++)
+            {
+                sb.Append(", ");
+                sb.Append(components[i]);
+            }
+
+            sb.Append("}");
+
+            return sb.ToString();
         }
 
         public override bool Equals(object obj)
@@ -176,10 +203,10 @@ namespace VectorTask
             }
 
             Vector vector = (Vector)obj;
-
+          
             for (int i = 0; i < components.Length; i++)
             {
-                if (components[i] != vector.components[i])
+                if (components[i] != vector[i])
                 {
                     return false;
                 }
@@ -193,9 +220,9 @@ namespace VectorTask
             int prime = 37;
             int hash = 1;
 
-            for (int i = 0; i < components.Length; i++)
+            foreach (double element in components)
             {
-                hash = (int)(prime * hash + components[i]);
+                hash = prime * hash + element.GetHashCode();
             }
 
             return hash;

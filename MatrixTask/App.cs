@@ -15,13 +15,15 @@ namespace MatrixTask
             double[] array1 = new double[] { 2, 3, 0 };
             double[] array2 = new double[] { 3, 4, 1 };
 
+            Matrix matrix = new Matrix(3, 5);
+
             Vector vector = new Vector(array2);
 
             Vector[] vectors = new Vector[] { new Vector(array1), new Vector(array2) };
 
             Matrix matrix2 = new Matrix(array);
 
-            Console.WriteLine(matrix2);
+            Console.WriteLine(matrix);
         }
     }
 }
