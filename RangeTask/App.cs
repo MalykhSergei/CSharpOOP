@@ -9,8 +9,8 @@ namespace RangeTask
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            Range range1 = new Range(6, 12);
-            Range range2 = new Range(8, 10);
+            Range range1 = new Range(1, 5); 
+            Range range2 = new Range(3, 15);
 
             Range intersection = range1.GetIntersection(range2);
 

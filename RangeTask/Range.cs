@@ -27,7 +27,7 @@ namespace RangeTask
 
         public Range GetIntersection(Range range)
         {
-            if (From > range.To || range.From > To)
+            if (From >= range.To || range.From >= To)
             {
                 return null;
             }
@@ -39,10 +39,7 @@ namespace RangeTask
         {
             if (From <= range.To && To >= range.From)
             {
-                double min = Math.Min(From, range.From);
-                double max = Math.Max(To, range.To);
-
-                return new Range[] { new Range(min, max) };
+                return new Range[] { new Range(Math.Min(From, range.From), Math.Max(To, range.To)) };
             }
 
             if (range.From > To)
@@ -55,46 +52,50 @@ namespace RangeTask
 
         public Range[] GetDifference(Range range)
         {
-            if (From <= range.To && To >= range.From)
+            if ((To <= range.To) && (From >= range.From))
             {
-                if (range.From > From && range.To >= To)
-                {
-                    return new Range[] { new Range(From, range.From) };
-                }
-
-                if (range.From <= From && range.To < To)
-                {
-                    return new Range[] { new Range(range.To, To) };
-                }
-
-                if (range.From > From && range.To < To)
-                {
-                    return new Range[] { new Range(From, range.From), new Range(range.To, To) };
-                }
-
                 return new Range[] { };
             }
 
-            return new Range[] { new Range(From, To) };
+            if ((From >= range.To) || (range.From >= To))
+            {
+                return new Range[] { new Range(From, To) };
+            }
+
+            if ((To > range.To) && (From < range.From))
+            {
+                return new Range[] { new Range(From, range.From), new Range(range.To, To) };
+            }
+
+            if (From < range.From)
+            {
+                return new Range[] { new Range(From, range.From) };
+            }
+
+            return new Range[] { new Range(range.To, To) };
+        }
+
+        private static string GetRangesArrayElement(Range[] ranges, int index)
+        {
+            if (ranges.Length == 0)
+            {
+                return null;
+            }
+
+            return string.Join(";", ranges[index]);
         }
 
         public static void Print(Range[] ranges)
         {
             StringBuilder sb = new StringBuilder();
 
-            if (ranges.Length == 0)
-            {
-                Console.WriteLine("[]");
-                return;
-            }
-
             sb.Append("[");
-            sb.Append("(" + ranges[0].From + "; " + ranges[0].To + ")");
+            sb.Append(GetRangesArrayElement(ranges, 0));
 
             for (int i = 1; i < ranges.Length; i++)
             {
-                sb.Append(", (");
-                sb.Append(ranges[i].From + "; " + ranges[i].To + ")");
+                sb.Append(",");
+                sb.Append(GetRangesArrayElement(ranges, i));
             }
 
             sb.Append("]");
@@ -104,7 +105,7 @@ namespace RangeTask
 
         public override string ToString()
         {
-            return string.Format("[({0}; {1})]", From, To);
+            return string.Format("({0}; {1})", From, To);
         }
     }
 }
