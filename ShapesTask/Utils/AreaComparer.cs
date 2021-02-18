@@ -7,17 +7,7 @@ namespace ShapesTask.Utils
     {
         public int Compare(IShape shape1, IShape shape2)
         {
-            if (shape1.GetArea().CompareTo(shape2.GetArea()) > 0)
-            {
-                return 1;
-            }
-
-            if (shape1.GetArea().CompareTo(shape2.GetArea()) < 0)
-            {
-                return -1;
-            }
-
-            return 0;
+            return shape1.GetArea().CompareTo(shape2.GetArea());
         }
     }
 }

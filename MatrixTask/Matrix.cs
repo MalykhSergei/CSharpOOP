@@ -8,50 +8,68 @@ namespace MatrixTask
     {
         private readonly Vector[] rows;
 
-        public Matrix(int rowsNumber, int columnsNumber)
+        public Matrix(int rowsCount, int columnsCount)
         {
-            if (rowsNumber <= 0)
+            if (rowsCount <= 0)
             {
-                string message = $"Number of rows = {rowsNumber}. It must be greater than 0";
-                throw new ArgumentException(message, nameof(rowsNumber));
+                string message = $"Number of rows = {rowsCount}. It must be greater than 0";
+                throw new ArgumentException(message, nameof(rowsCount));
             }
 
-            if (columnsNumber <= 0)
+            if (columnsCount <= 0)
             {
-                string message = $"Number of columns = {columnsNumber}. It must be greater than 0";
-                throw new ArgumentException(message, nameof(columnsNumber));
+                string message = $"Number of columns = {columnsCount}. It must be greater than 0";
+                throw new ArgumentException(message, nameof(columnsCount));
             }
 
-            rows = new Vector[rowsNumber];
+            rows = new Vector[rowsCount];
 
-            for (int i = 0; i < rowsNumber; i++)
+            for (int i = 0; i < rowsCount; i++)
             {
-                rows[i] = new Vector(columnsNumber);
+                rows[i] = new Vector(columnsCount);
             }
         }
 
-        public Matrix(Matrix matrix)
+        public Matrix(Matrix matrix) : this(matrix.rows)
         {
-            rows = matrix.rows;
+
         }
 
         public Matrix(double[,] components)
         {
             rows = new Vector[components.GetLength(0)];
 
+            Vector vector = new Vector(new double[components.GetLength(1)]);
+
             for (int i = 0; i < components.GetLength(0); i++)
             {
-                double[] array = new double[components.GetLength(1)];
-
                 for (int j = 0; j < components.GetLength(1); j++)
                 {
-                    array[j] = components[i, j];
+                    vector[j] = components[i, j];
                 }
 
-                Vector vector = new Vector(array);
+                Vector vectorCopy = new Vector(vector);
 
-                rows[i] = vector;
+                rows[i] = vectorCopy;
             }
+
+
+            //rows = new Vector[components.GetLength(0)];
+
+
+
+            //for (int i = 0; i < rows.GetLength(0); i++)
+            //{
+            //    // double[] array = new double[components.GetLength(1)];
+
+            //    for (int j = 0; j < components.GetLength(1); j++)
+            //    {
+            //        array[j] = components[i, j];
+            //    }
+
+            // Vector vector = new Vector(array);
+            //    rows[i] = vector;
+            //}
         }
 
         public Matrix(Vector[] vectors)

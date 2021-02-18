@@ -41,35 +41,35 @@ namespace ShapesTask.Shapes
             return Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
         }
 
-        private double GetDistanceA()
+        private double GetSideALength()
         {
             return GetDistance(X1, Y1, X2, Y2);
         }
 
-        private double GetDistanceB()
+        private double GetSideBLength()
         {
             return GetDistance(X2, Y2, X3, Y3);
         }
 
-        private double GetDistanceC()
+        private double GetSideCLength()
         {
             return GetDistance(X1, Y1, X3, Y3);
         }
 
         public double GetArea()
         {
-            double getDistanceA = GetDistanceA();
-            double getDistanceB = GetDistanceB();
-            double getDistanceC = GetDistanceC();
+            double getSideALength = GetSideALength();
+            double getSideBLength = GetSideBLength();
+            double getSideCLength = GetSideCLength();
 
-            double semiPerimeter = (getDistanceA + getDistanceB + getDistanceC) / 2;
+            double semiPerimeter = (getSideALength + getSideBLength + getSideCLength) / 2;
 
-            return Math.Sqrt(semiPerimeter * (semiPerimeter - getDistanceA) * (semiPerimeter - getDistanceB) * (semiPerimeter - getDistanceC));
+            return Math.Sqrt(semiPerimeter * (semiPerimeter - getSideALength) * (semiPerimeter - getSideBLength) * (semiPerimeter - getSideCLength));
         }
 
         public double GetPerimeter()
         {
-            return GetDistanceA() + GetDistanceB() + GetDistanceC();
+            return GetSideALength() + GetSideBLength() + GetSideCLength();
         }
 
         public override string ToString()
@@ -84,7 +84,7 @@ namespace ShapesTask.Shapes
                 return true;
             }
 
-            if (obj is null && obj.GetType() != GetType())
+            if (obj is null || obj.GetType() != GetType())
             {
                 return false;
             }
