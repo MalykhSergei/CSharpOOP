@@ -13,13 +13,10 @@ namespace VectorTask
 
             double[] array2 = {};
 
-            Vector vector1 = new Vector(array1);
-            Vector vector2 = new Vector(vector1);
-
-            vector1[0] = 14;
+            Vector vector1 = new Vector(8, array1);
 
             Console.WriteLine(vector1);
-            Console.WriteLine(vector2);
+            
         }
     }
 }

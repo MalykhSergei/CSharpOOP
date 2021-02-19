@@ -6,7 +6,23 @@ namespace MatrixTask
 {
     class Matrix
     {
-        private readonly Vector[] rows;
+        private Vector[] rows;
+
+        public int GetRowsCount
+        {
+            get
+            {
+                return rows.Length;
+            }
+        }
+
+        public int GetColumnsCount
+        {
+            get
+            {
+                return rows[0].GetSize();
+            }
+        }
 
         public Matrix(int rowsCount, int columnsCount)
         {
@@ -37,6 +53,11 @@ namespace MatrixTask
 
         public Matrix(double[,] components)
         {
+            if (components.GetLength(0) == 0 || components.GetLength(1) == 0)
+            {
+                throw new ArgumentException("The Matrix size must be greater than 0");
+            }
+
             rows = new Vector[components.GetLength(0)];
 
             Vector vector = new Vector(new double[components.GetLength(1)]);
@@ -52,93 +73,70 @@ namespace MatrixTask
 
                 rows[i] = vectorCopy;
             }
-
-
-            //rows = new Vector[components.GetLength(0)];
-
-
-
-            //for (int i = 0; i < rows.GetLength(0); i++)
-            //{
-            //    // double[] array = new double[components.GetLength(1)];
-
-            //    for (int j = 0; j < components.GetLength(1); j++)
-            //    {
-            //        array[j] = components[i, j];
-            //    }
-
-            // Vector vector = new Vector(array);
-            //    rows[i] = vector;
-            //}
         }
 
         public Matrix(Vector[] vectors)
         {
             int length = vectors.Length;
 
-            foreach (Vector vector in vectors)
-            {
-                if (vector.GetSize() != vectors[0].GetSize())
-                {
-                    string message = $"All array vectors must be of the same length";
-                    throw new ArgumentException(message);
-                }
-            }
-
             rows = new Vector[length];
 
             for (int i = 0; i < length; i++)
             {
-                Vector vector = new Vector(vectors[i]);
-                rows[i] = vector;
+                rows[i] = new Vector(vectors[i]);
+            }
+
+            foreach (Vector vector in vectors)
+            {
+                if (rows[0].GetSize() != vector.GetSize())
+                {
+                    throw new ArgumentException($"The number of columns - {rows[0].GetSize()} " +
+                        $"not equal to the length of the larger vector - {vector.GetSize()} ");
+                }
             }
         }
 
-        public double this[int i, int j]
+        public double this[int rowIndex, int columnIndex]
         {
             get
             {
-                if (i >= GetNumberRows())
+                if (rowIndex >= GetRowsCount || rowIndex <= 0)
                 {
-                    string message = $"Index i = {i}. It must be less than {GetNumberRows()}";
-                    throw new ArgumentOutOfRangeException(message, nameof(i));
+                    throw new ArgumentOutOfRangeException($"Index i = {rowIndex}. It must be less than {GetRowsCount} and greater than 0");
                 }
 
-                if (j >= GetNumberColumns())
+                if (columnIndex >= GetColumnsCount || columnIndex <= 0)
                 {
-                    string message = $"Index j = {j}. It must be less than {GetNumberColumns()}";
-                    throw new ArgumentOutOfRangeException(message, nameof(j));
+                    throw new ArgumentOutOfRangeException($"Index j = {columnIndex}. It must be less than {GetColumnsCount} and greater than 0");
                 }
 
-                return rows[i][j];
+                return rows[rowIndex][columnIndex];
             }
             set
             {
-                if (i >= GetNumberRows())
+                if (rowIndex >= GetRowsCount || rowIndex <= 0)
                 {
-                    string message = $"Index i = {i}. It must be less than {GetNumberRows()}";
-                    throw new ArgumentOutOfRangeException(message, nameof(i));
+                    throw new ArgumentOutOfRangeException($"Index i = {rowIndex}. It must be less than {GetRowsCount} and greater than 0");
                 }
 
-                if (j >= GetNumberColumns())
+                if (columnIndex >= GetColumnsCount || columnIndex <= 0)
                 {
-                    string message = $"Index j = {j}. It must be less than {GetNumberColumns()}";
-                    throw new ArgumentOutOfRangeException(message, nameof(j));
+                    throw new ArgumentOutOfRangeException($"Index j = {columnIndex}. It must be less than {GetColumnsCount} and greater than 0");
                 }
 
-                rows[i][j] = value;
+                rows[rowIndex][columnIndex] = value;
             }
         }
 
-        public int GetNumberRows()
-        {
-            return rows.Length;
-        }
+        //public int GetRowsCount()
+        //{
+        //    return rows.Length;
+        //}
 
-        public int GetNumberColumns()
-        {
-            return rows[0].GetSize();
-        }
+        //public int GetColumnsCount()
+        //{
+        //    return rows[0].GetSize();
+        //}
 
         public Vector GetVectorRow(int index)
         {
@@ -191,7 +189,7 @@ namespace MatrixTask
 
         public void Transposition()
         {
-            for (int i = 0; i < GetNumberColumns(); i++)
+            for (int i = 0; i < GetColumnsCount; i++)
             {
                 rows[i] = GetVectorColumn(i);
             }
@@ -298,7 +296,7 @@ namespace MatrixTask
             int length = rows.Length;
             int lengthRow = rows[0].GetSize();
 
-            if ((length != matrix.GetNumberRows()) || (lengthRow != matrix.GetNumberColumns()))
+            if ((length != matrix.GetRowsCount) || (lengthRow != matrix.GetColumnsCount))
             {
                 throw new ArgumentException("The dimension of the matrices must be the same");
             }
@@ -314,7 +312,7 @@ namespace MatrixTask
             int length = rows.Length;
             int lengthRow = rows[0].GetSize();
 
-            if ((length != matrix.GetNumberRows()) || (lengthRow != matrix.GetNumberColumns()))
+            if ((length != matrix.GetRowsCount) || (lengthRow != matrix.GetColumnsCount))
             {
                 throw new ArgumentException("The dimension of the matrices must be the same");
             }
@@ -347,8 +345,8 @@ namespace MatrixTask
         {
             int length = rows.Length;
             int countColumns = rows[0].GetSize();
-            int lengthMatrix = matrix.GetNumberRows();
-            int countColumnsMatrix = matrix.GetNumberColumns();
+            int lengthMatrix = matrix.GetRowsCount;
+            int countColumnsMatrix = matrix.GetColumnsCount;
 
             if (countColumns != lengthMatrix)
             {
@@ -428,14 +426,14 @@ namespace MatrixTask
 
             Matrix matrix = (Matrix)obj;
 
-            if ((matrix.GetNumberColumns() != GetNumberColumns()) || (matrix.GetNumberRows() != GetNumberRows()))
+            if ((matrix.GetColumnsCount != GetColumnsCount) || (matrix.GetRowsCount != GetRowsCount))
             {
                 return false;
             }
 
-            for (int i = 0; i < matrix.GetNumberRows(); i++)
+            for (int i = 0; i < matrix.GetRowsCount; i++)
             {
-                for (int j = 0; j < matrix.GetNumberColumns(); j++)
+                for (int j = 0; j < matrix.GetColumnsCount; j++)
                 {
                     if (matrix[j, i] != this[j, i])
                     {
@@ -452,9 +450,9 @@ namespace MatrixTask
             int prime = 37;
             int hash = 1;
 
-            for (int i = 0; i < GetNumberRows(); i++)
+            for (int i = 0; i < GetRowsCount; i++)
             {
-                for (int j = 0; j < GetNumberColumns(); j++)
+                for (int j = 0; j < GetColumnsCount; j++)
                 {
                     hash = prime * hash * this[i, j].GetHashCode();
                 }

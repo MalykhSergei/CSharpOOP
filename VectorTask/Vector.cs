@@ -7,15 +7,22 @@ namespace VectorTask
     {
         private double[] components;
 
-        public Vector(int length)
+        public int GetSize
         {
-            if (length <= 0)
+            get
             {
-                string message = $"Length = {length}. It must be greater than 0!";
-                throw new ArgumentException(message, nameof(length));
+                return components.Length;
+            }
+        }
+
+        public Vector(int size)
+        {
+            if (size <= 0)
+            {
+                throw new ArgumentException($"Length = {size}. It must be greater than 0!", nameof(size));
             }
 
-            components = new double[length];
+            components = new double[size];
         }
 
         public Vector(Vector vector)
@@ -26,10 +33,9 @@ namespace VectorTask
 
         public Vector(double[] components)
         {
-            if (components.Length <= 0)
+            if (components.Length == 0)
             {
-                string message = $"Length = {components.Length}. It must be greater than 0!";
-                throw new ArgumentException(message, nameof(components.Length));
+                throw new ArgumentException($"Length = {components.Length}. It must be greater than 0!", nameof(components.Length));
             }
 
             this.components = new double[components.Length];
@@ -37,42 +43,36 @@ namespace VectorTask
             components.CopyTo(this.components, 0);
         }
 
-        public Vector(int length, double[] components)
+        public Vector(int size, double[] components)
         {
-            if (length <= 0)
+            if (size <= 0)
             {
-                string message = $"Length = {length}. It must be greater than 0!";
-                throw new ArgumentException(message, nameof(length));
+                throw new ArgumentException($"Length = {size}. It must be greater than 0!", nameof(size));
             }
 
-            this.components = new double[length];
+            this.components = new double[size];
 
-            components.CopyTo(this.components, 0);
-        }
+            int min = Math.Min(components.Length, size);
 
-        public int GetSize()
-        {
-            return components.Length;
+            Array.Copy(components, this.components, min);
         }
 
         public double this[int index]
         {
             get
             {
-                if (index >= GetSize() || index < 0)
+                if (index < 0 || index >= components.Length)
                 {
-                    string message = $"Index = {index}. It must be greater than or equal to 0 and less {GetSize()}";
-                    throw new ArgumentOutOfRangeException(message, nameof(index));
+                    throw new ArgumentOutOfRangeException($"Index = {index}. It must be greater than or equal to 0 and less {components.Length}", nameof(index));
                 }
 
                 return components[index];
             }
             set
             {
-                if (index >= GetSize() || index < 0)
+                if (index < 0 || index >= components.Length)
                 {
-                    string message = $"Index = {index}. It must be greater than or equal to 0 and less {GetSize()}";
-                    throw new ArgumentOutOfRangeException(message, nameof(index));
+                    throw new ArgumentOutOfRangeException($"Index = {index}. It must be greater than or equal to 0 and less {components.Length}", nameof(index));
                 }
 
                 components[index] = value;
@@ -129,16 +129,6 @@ namespace VectorTask
 
             return Math.Sqrt(sum);
         }
-
-        //public double GetElement(int index)
-        //{
-        //    return components[index];
-        //}
-
-        //public void SetElement(int index, double value)
-        //{
-        //    components[index] = value;
-        //}
 
         public static Vector GetSum(Vector vector1, Vector vector2)
         {
@@ -203,10 +193,15 @@ namespace VectorTask
             }
 
             Vector vector = (Vector)obj;
-          
+
+            if (vector.components.Length != components.Length)
+            {
+                return false;
+            }
+
             for (int i = 0; i < components.Length; i++)
             {
-                if (components[i] != vector[i])
+                if (components[i] != vector.components[i])
                 {
                     return false;
                 }
