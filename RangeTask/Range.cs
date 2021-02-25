@@ -75,27 +75,17 @@ namespace RangeTask
             return new Range[] { new Range(range.To, To) };
         }
 
-        private static string GetRangesArrayElement(Range[] ranges, int index)
-        {
-            if (ranges.Length == 0)
-            {
-                return null;
-            }
-
-            return string.Join(";", ranges[index]);
-        }
-
         public static void Print(Range[] ranges)
         {
             StringBuilder sb = new StringBuilder();
 
             sb.Append("[");
-            sb.Append(GetRangesArrayElement(ranges, 0));
+            sb.Append(ranges[0]);
 
             for (int i = 1; i < ranges.Length; i++)
             {
-                sb.Append(",");
-                sb.Append(GetRangesArrayElement(ranges, i));
+                sb.Append(", ");
+                sb.Append(ranges[i]);
             }
 
             sb.Append("]");
