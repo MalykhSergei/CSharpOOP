@@ -74,7 +74,7 @@ namespace ShapesTask.Shapes
 
         public override string ToString()
         {
-            return $"Треугольник с вершинами: {X1}, {Y1}, {X2}, {Y2}, {X3}, {Y3}";
+            return $"Треугольник с вершинами: ({X1}; {Y1}), ({X2}; {Y2}), ({X3}; {Y3})";
         }
 
         public override bool Equals(object obj)

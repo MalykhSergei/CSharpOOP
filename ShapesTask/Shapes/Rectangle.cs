@@ -34,7 +34,7 @@
 
         public override string ToString()
         {
-            return $"Прямоугольник со сторонами {Height} и {Width}";
+            return $"Прямоугольник с высотой {Height} и шириной {Width}";
         }
 
         public override bool Equals(object obj)
