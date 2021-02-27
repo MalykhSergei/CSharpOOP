@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            ConvertCSV.ReadCSV("CSV.txt", "HTML.html");
+            Csv.ReadCsv();
         }
     }
 }

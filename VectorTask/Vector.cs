@@ -7,13 +7,7 @@ namespace VectorTask
     {
         private double[] components;
 
-        public int GetSize
-        {
-            get
-            {
-                return components.Length;
-            }
-        }
+        public int Size => components.Length;
 
         public Vector(int size)
         {
@@ -35,7 +29,7 @@ namespace VectorTask
         {
             if (components.Length == 0)
             {
-                throw new ArgumentException($"Length = {components.Length}. It must be greater than 0!", nameof(components.Length));
+                throw new ArgumentException($"Size = {components.Length}. It must be greater than 0!", nameof(components.Length));
             }
 
             this.components = new double[components.Length];
@@ -47,7 +41,7 @@ namespace VectorTask
         {
             if (size <= 0)
             {
-                throw new ArgumentException($"Length = {size}. It must be greater than 0!", nameof(size));
+                throw new ArgumentException($"Size = {size}. It must be greater than 0!", nameof(size));
             }
 
             this.components = new double[size];
