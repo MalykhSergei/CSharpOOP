@@ -9,7 +9,7 @@ namespace ShapesTask.Utils
         {
             if (shapes.Length == 0)
             {
-                throw new ArgumentException("Array is empty!", nameof(shapes.Length));
+                throw new ArgumentException("Array is empty!", nameof(shapes));
             }
 
             Array.Sort(shapes, new AreaComparer());
@@ -21,12 +21,12 @@ namespace ShapesTask.Utils
         {
             if (shapes.Length == 0)
             {
-                throw new ArgumentException("Array is empty!", nameof(shapes.Length));
+                throw new ArgumentException("Array is empty!", nameof(shapes));
             }
 
             if (shapes.Length < 2)
             {
-                throw new ArgumentException("There are less than two shapes in the array!", nameof(shapes.Length));
+                throw new ArgumentException("There are less than two shapes in the array!", nameof(shapes));
             }
 
             Array.Sort(shapes, new PerimeterComparer());
