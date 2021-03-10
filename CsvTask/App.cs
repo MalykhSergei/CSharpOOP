@@ -2,9 +2,9 @@
 {
     class App
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Csv.ReadCsv();
+            Csv.ReadCsv(args[0], args[1]);
         }
     }
 }

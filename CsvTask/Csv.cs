@@ -6,117 +6,113 @@ namespace CsvTask
 {
     class Csv
     {
-        public static void ReadCsv()
+        public static void ReadCsv(string inputFileName, string outputFileName)
         {
             Console.OutputEncoding = Encoding.UTF8;
 
             try
             {
-                using (StreamReader reader = new StreamReader("Csv.txt"))
+                using StreamReader reader = new StreamReader(inputFileName);
+
+                bool cellOpen = false;
+                bool quoteAdded = false;
+
+                using StreamWriter writer = new StreamWriter(outputFileName);
+
+                writer.Write("<!DOCTYPE html> <html> <head> <meta charset=\"UTF-8\"> <title>Table</title> </head> <body> <table>");
+
+                string textCsv;
+
+                while ((textCsv = reader.ReadLine()) != null)
                 {
-                    bool cellOpen = false;
-                    bool quoteAdded = false;
+                    writer.Write("<tr>");
+                    writer.Write("<td>");
 
-                    using (StreamWriter writer = new StreamWriter("HTML.html"))
+                    for (int i = 0; i < textCsv.Length; i++)
                     {
-                        writer.Write("<table>");
+                        char ch = textCsv[i];
+                        char chNext = ' ';
 
-                        string textCSV;
-
-                        while ((textCSV = reader.ReadLine()) != null)
+                        if (i != textCsv.Length - 1)
                         {
-                            writer.Write("<tr>");
-                            writer.Write("<td>");
-
-                            for (int i = 0; i < textCSV.Length; i++)
-                            {
-                                char ch = textCSV[i];
-                                char chNext = ' ';
-
-                                if (i != textCSV.Length - 1)
-                                {
-                                    chNext = textCSV[i + 1];
-                                }
-
-                                if ((ch == ',') && cellOpen)
-                                {
-                                    writer.Write(ch);
-                                }
-                                else if ((ch == '\n') && cellOpen)
-                                {
-                                    writer.Write("<br/>");
-                                }
-                                else if ((ch == ',') && !cellOpen)
-                                {
-                                    writer.Write("</td><td>");
-                                }
-                                else if (ch == '"')
-                                {
-                                    if (!cellOpen)
-                                    {
-                                        cellOpen = true;
-                                    }
-                                    else if (quoteAdded)
-                                    {
-                                        quoteAdded = false;
-                                    }
-                                    else if (chNext == ch)
-                                    {
-                                        writer.Write('"');
-                                        quoteAdded = true;
-                                    }
-                                    else if (chNext != ch)
-                                    {
-                                        cellOpen = false;
-                                    }
-                                }
-                                else if ((ch == '\n') && !cellOpen)
-                                {
-                                    writer.Write("</td>");
-                                    writer.Write("</tr>");
-
-                                    if (i == textCSV.Length - 1)
-                                    {
-                                        break;
-                                    }
-
-                                    writer.Write("<tr>");
-                                    writer.Write("<td>");
-                                }
-                                else if (ch == '<')
-                                {
-                                    writer.Write("&lt;");
-                                }
-                                else if (ch == '>')
-                                {
-                                    writer.Write("&gt;");
-                                }
-                                else if (ch == '&')
-                                {
-                                    writer.Write("&amp;");
-                                }
-                                else
-                                {
-                                    writer.Write(ch);
-                                }
-                            }
+                            chNext = textCsv[i + 1];
                         }
 
-                        writer.Write("</table>");
+                        if ((ch == ',') && cellOpen)
+                        {
+                            writer.Write(ch);
+                        }
+                        else if ((ch == '\n') && cellOpen)
+                        {
+                            writer.Write("<br/>");
+                        }
+                        else if ((ch == ',') && !cellOpen)
+                        {
+                            writer.Write("</td><td>");
+                        }
+                        else if (ch == '"')
+                        {
+                            if (!cellOpen)
+                            {
+                                cellOpen = true;
+                            }
+                            else if (quoteAdded)
+                            {
+                                quoteAdded = false;
+                            }
+                            else if (chNext == ch)
+                            {
+                                writer.Write('"');
+                                quoteAdded = true;
+                            }
+                            else if (chNext != ch)
+                            {
+                                cellOpen = false;
+                            }
+                        }
+                        else if ((ch == '\n') && !cellOpen)
+                        {
+                            writer.Write("</td>");
+                            writer.Write("</tr>");
+
+                            if (i == textCsv.Length - 1)
+                            {
+                                break;
+                            }
+
+                            writer.Write("<tr>");
+                            writer.Write("<td>");
+                        }
+                        else if (ch == '<')
+                        {
+                            writer.Write("&lt;");
+                        }
+                        else if (ch == '>')
+                        {
+                            writer.Write("&gt;");
+                        }
+                        else if (ch == '&')
+                        {
+                            writer.Write("&amp;");
+                        }
+                        else
+                        {
+                            writer.Write(ch);
+                        }
                     }
                 }
+
+                writer.Write("</td> </tr> </table> </body> </html>");
             }
             catch (FileNotFoundException)
             {
                 Console.WriteLine("File is not found!");
                 Console.ReadKey();
-                return;
             }
-            catch (IOException e)
+            catch (IOException)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("Error reading or writing the file");
                 Console.ReadKey();
-                return;
             }
         }
     }
