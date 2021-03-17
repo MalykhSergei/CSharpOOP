@@ -10,17 +10,23 @@ namespace ArrayListHomeTask
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(string.Join(", ", Utils.ReadFile("1.txt")));
+            Console.OutputEncoding = Encoding.UTF8;
+
+            Console.WriteLine($"Читаем в список строки из файла: {string.Join(", ", Utils.GetStringsFromFileList("1.txt"))}");
 
             Console.WriteLine();
 
-            List<int> list = new List<int>() { 1, 2, 3, 4, 4, 4, 4, 4, 5, 5 };
+            List<int> list = new List<int> { 1, 2, 3, 2, 2, 2, 3, 4, 4, 4, 4, 4, 5, 5 };
 
             Utils.RemoveEvenNumbers(list);
 
-            Console.WriteLine(string.Join(", ", list));
+            Console.WriteLine($"Список без четных элементов: { string.Join(", ", list)}");
 
-            Console.WriteLine(string.Join(", ", Utils.RemoveDuplicateItems(list)));
+            Console.WriteLine();
+
+            Console.WriteLine($"Список без повторяющихся элементов: { string.Join(", ", Utils.GetWithoutDuplicateItemsList(list))}");
+
+            Console.ReadKey();
         }
     }
 }

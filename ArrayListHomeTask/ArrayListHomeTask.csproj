@@ -6,6 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{051E63D3-1E3E-42B6-A6AE-2097F8F3BA50}</ProjectGuid>
     <OutputType>Exe</OutputType>
+	<LangVersion>8.0</LangVersion>
     <RootNamespace>ArrayListHomeTask</RootNamespace>
     <AssemblyName>ArrayListHomeTask</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>

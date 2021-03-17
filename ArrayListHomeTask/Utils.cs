@@ -6,20 +6,19 @@ namespace ArrayListHomeTask
 {
     class Utils
     {
-        public static List<string> ReadFile(string fileName)
+        public static List<string> GetStringsFromFileList(string fileName)
         {
-            List<string> list = new List<string>();
+            List<string> stringsFromFileList = new List<string>();
 
             try
             {
-                using (StreamReader reader = new StreamReader(fileName))
-                {
-                    string currentLine;
+                using StreamReader reader = new StreamReader(fileName);
 
-                    while ((currentLine = reader.ReadLine()) != null)
-                    {
-                        list.Add(currentLine);
-                    }
+                string currentLine;
+
+                while ((currentLine = reader.ReadLine()) != null)
+                {
+                    stringsFromFileList.Add(currentLine);
                 }
             }
             catch (FileNotFoundException)
@@ -31,27 +30,33 @@ namespace ArrayListHomeTask
                 Console.WriteLine(e);
             }
 
-            return list;
+            return stringsFromFileList;
         }
 
         public static void RemoveEvenNumbers(List<int> list)
         {
-            list.RemoveAll(e => e % 2 == 0);
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                if (list[i] % 2 == 0)
+                {
+                    list.Remove(list[i]);
+                }
+            }
         }
 
-        public static List<T> RemoveDuplicateItems<T>(List<T> list)
+        public static List<T> GetWithoutDuplicateItemsList<T>(List<T> list)
         {
-            List<T> newList = new List<T>();
+            List<T> withoutDuplicateItemsList = new List<T>(list.Count);
 
             foreach (T item in list)
             {
-                if (!newList.Contains(item))
+                if (!withoutDuplicateItemsList.Contains(item))
                 {
-                    newList.Add(item);
+                    withoutDuplicateItemsList.Add(item);
                 }
             }
 
-            return newList;
+            return withoutDuplicateItemsList;
         }
     }
 }
