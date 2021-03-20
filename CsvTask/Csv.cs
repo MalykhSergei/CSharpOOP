@@ -6,6 +6,13 @@ namespace CsvTask
 {
     class Csv
     {
+        public static void PrintHelp()
+        {
+            Console.WriteLine("For the program to work correctly, you must enter arguments separated by a space, where:");
+            Console.WriteLine("- the first argument is the address and name of the source csv file");
+            Console.WriteLine("- the second argument is the address and name of the resulting html file");
+        }
+
         public static void ReadCsv(string inputFileName, string outputFileName)
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -14,7 +21,6 @@ namespace CsvTask
             {
                 using StreamReader reader = new StreamReader(inputFileName);
 
-                bool cellOpen = false;
                 bool quoteAdded = false;
 
                 using StreamWriter writer = new StreamWriter(outputFileName);
@@ -25,93 +31,92 @@ namespace CsvTask
 
                 while ((textCsv = reader.ReadLine()) != null)
                 {
-                    writer.Write("<tr>");
-                    writer.Write("<td>");
+                    if (quoteAdded)
+                    {
+                        writer.Write("<br/>");
+                    }
+                    else
+                    {
+                        writer.WriteLine("<tr>");
+                        writer.Write("<td>");
+                    }
 
                     for (int i = 0; i < textCsv.Length; i++)
                     {
-                        char ch = textCsv[i];
-                        char chNext = ' ';
+                        char currentChar = textCsv[i];
 
-                        if (i != textCsv.Length - 1)
-                        {
-                            chNext = textCsv[i + 1];
-                        }
-
-                        if ((ch == ',') && cellOpen)
-                        {
-                            writer.Write(ch);
-                        }
-                        else if ((ch == '\n') && cellOpen)
-                        {
-                            writer.Write("<br/>");
-                        }
-                        else if ((ch == ',') && !cellOpen)
-                        {
-                            writer.Write("</td><td>");
-                        }
-                        else if (ch == '"')
-                        {
-                            if (!cellOpen)
-                            {
-                                cellOpen = true;
-                            }
-                            else if (quoteAdded)
-                            {
-                                quoteAdded = false;
-                            }
-                            else if (chNext == ch)
-                            {
-                                writer.Write('"');
-                                quoteAdded = true;
-                            }
-                            else if (chNext != ch)
-                            {
-                                cellOpen = false;
-                            }
-                        }
-                        else if ((ch == '\n') && !cellOpen)
-                        {
-                            writer.Write("</td>");
-                            writer.Write("</tr>");
-
-                            if (i == textCsv.Length - 1)
-                            {
-                                break;
-                            }
-
-                            writer.Write("<tr>");
-                            writer.Write("<td>");
-                        }
-                        else if (ch == '<')
+                        if (currentChar == '<')
                         {
                             writer.Write("&lt;");
                         }
-                        else if (ch == '>')
+                        else if (currentChar == '>')
                         {
                             writer.Write("&gt;");
                         }
-                        else if (ch == '&')
+                        else if (currentChar == '&')
                         {
                             writer.Write("&amp;");
                         }
+                        else if (currentChar == '"')
+                        {
+                            if (quoteAdded)
+                            {
+                                quoteAdded = false;
+                            }
+                            else
+                            {
+                                quoteAdded = true;
+
+                                if (i != 0)
+                                {
+                                    if (textCsv[i - 1] == '"')
+                                    {
+                                        writer.Write('"');
+                                    }
+                                }
+                            }
+                        }
+                        else if (currentChar == ',')
+                        {
+                            if (quoteAdded)
+                            {
+                                writer.Write(", ");
+                            }
+                            else
+                            {
+                                writer.Write("</td><td>");
+                            }
+                        }
                         else
                         {
-                            writer.Write(ch);
+                            writer.Write(currentChar);
                         }
+                    }
+
+                    if (!quoteAdded)
+                    {
+                        writer.WriteLine("</td>");
+                        writer.WriteLine("</tr>");
                     }
                 }
 
-                writer.Write("</td> </tr> </table> </body> </html>");
+                writer.WriteLine("</table>");
+                writer.WriteLine("</body>");
+                writer.WriteLine("</html>");
             }
             catch (FileNotFoundException)
             {
                 Console.WriteLine("File is not found!");
+                Console.WriteLine();
+                PrintHelp();
+
                 Console.ReadKey();
             }
             catch (IOException)
             {
                 Console.WriteLine("Error reading or writing the file");
+                PrintHelp();
+
                 Console.ReadKey();
             }
         }
