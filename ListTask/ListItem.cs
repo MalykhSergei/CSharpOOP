@@ -1,25 +1,20 @@
 ﻿namespace ListTask
 {
-    public partial class LinkedList<T>
+    class ListItem<T>
     {
-        private class ListItem<E>
+        public ListItem<T> Next { get; set; }
+
+        public T Value { get; set; }
+
+        public ListItem(T value)
         {
-            public ListItem<E> Next { get; set; }
+            Value = value;
+        }
 
-            public E Value { get; set; }
-
-            public ListItem() { }
-
-            public ListItem(E value)
-            {
-                Value = value;
-            }
-
-            public ListItem(E value, ListItem<E> next)
-            {
-                Value = value;
-                Next = next;
-            }
+        public ListItem(T value, ListItem<T> next)
+        {
+            Value = value;
+            Next = next;
         }
     }
 }

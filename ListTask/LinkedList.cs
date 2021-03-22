@@ -3,7 +3,7 @@ using System.Text;
 
 namespace ListTask
 {
-    public partial class LinkedList<T>
+    class LinkedList<T>
     {
         private ListItem<T> head;
         private ListItem<T> lastNode;
@@ -28,32 +28,25 @@ namespace ListTask
 
         public T GetFirst()
         {
-            if (head == null)
-            {
-                throw new ArgumentNullException("List is empty");
-            }
+            CheckListIsEmpty();
 
             return head.Value;
         }
 
         private ListItem<T> GetNode(int index)
         {
-            CheckListIsEmpty();
             CheckIndex(index);
-
-            int i = 0;
-
-            ListItem<T> node = head;
 
             if (index == Count - 1)
             {
                 return lastNode;
             }
 
-            while (i < index)
+            ListItem<T> node = head;
+
+            for (int i = 0; i < index; i++)
             {
                 node = node.Next;
-                i++;
             }
 
             return node;
@@ -61,41 +54,32 @@ namespace ListTask
 
         public void Add(T value)
         {
-            ListItem<T> node = head;
-            ListItem<T> tempNode = new ListItem<T>();
+            ListItem<T> newNode = new ListItem<T>(value);
 
             if (head == null)
             {
-                AddFirst(value);
+                head = newNode;
             }
             else
             {
-                tempNode.Value = value;
-                tempNode.Next = null;
-
-                while (node.Next != null)
-                {
-                    node = node.Next;
-                }
-
-                node.Next = tempNode;
-
-                Count++;
+                lastNode.Next = newNode;
             }
+
+            lastNode = newNode;
+
+            Count++;
         }
 
         public T this[int index]
         {
             get
             {
-                CheckListIsEmpty();
                 CheckIndex(index);
 
                 return GetNode(index).Value;
             }
             set
             {
-                CheckListIsEmpty();
                 CheckIndex(index);
 
                 ListItem<T> node = GetNode(index);
@@ -106,7 +90,6 @@ namespace ListTask
 
         public T RemoveByIndex(int index)
         {
-            CheckListIsEmpty();
             CheckIndex(index);
 
             if (index == 0)
@@ -158,25 +141,32 @@ namespace ListTask
 
             if (index == Count)
             {
-                ListItem<T> lastItem = lastNode;
-                lastItem.Next = new ListItem<T>(value, null);
+                Add(value);
+
+                return;
             }
-            else
+
+            ListItem<T> node = GetNode(index - 1);
+            ListItem<T> newNode = new ListItem<T>(value)
             {
-                ListItem<T> previousNode = GetNode(index - 1);
-                previousNode.Next = new ListItem<T>(value, previousNode.Next);
-            }
+                Next = node.Next
+            };
+
+            node.Next = newNode;
 
             Count++;
         }
 
         public bool RemoveByValue(T value)
         {
+            if (Count == 0)
+            {
+                return false;
+            }
+
             ListItem<T> node = head;
 
-            int i = 0;
-
-            while (i < Count)
+            for (int i = 0; i < Count; i++)
             {
                 if (Equals(node.Value, value))
                 {
@@ -194,8 +184,6 @@ namespace ListTask
 
                     return true;
                 }
-
-                i++;
 
                 node = node.Next;
             }
@@ -217,6 +205,11 @@ namespace ListTask
 
         public void Reverse()
         {
+            if (head == null)
+            {
+                return;
+            }
+
             ListItem<T> node = head;
             ListItem<T> previousNext = null;
 
@@ -226,29 +219,45 @@ namespace ListTask
 
                 node.Next = previousNext;
                 previousNext = node;
-                head = node;
                 node = temp;
             }
+
+            head = previousNext;
         }
 
         public LinkedList<T> Copy()
         {
-            LinkedList<T> list = new LinkedList<T>();
+            LinkedList<T> copyList = new LinkedList<T>();
 
-            int count = 0;
-
-            for (ListItem<T> p = head; p != null; p = p.Next)
+            if (head == null)
             {
-                list.Add(p.Value);
-
-                count++;
+                return copyList;
             }
 
-            return list;
+            ListItem<T> node = head;
+
+            ListItem<T> newNode = new ListItem<T>(node.Value);
+            copyList.head = newNode;
+
+            while (node.Next != null)
+            {
+                newNode.Next = new ListItem<T>(node.Next.Value);
+                newNode = newNode.Next;
+                node = node.Next;
+            }
+
+            copyList.Count = Count;
+
+            return copyList;
         }
 
         public override string ToString()
         {
+            if (head == null)
+            {
+                return "[]";
+            }
+
             StringBuilder sb = new StringBuilder();
 
             ListItem<T> node = head;

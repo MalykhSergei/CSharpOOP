@@ -18,9 +18,7 @@ namespace ListTask
             list1.Add(45);
             list1.Add(456);
 
-            list2 = list1.Copy();
-
-            Console.WriteLine(list2);
+            Console.WriteLine(list1);
         }
     }
 }
