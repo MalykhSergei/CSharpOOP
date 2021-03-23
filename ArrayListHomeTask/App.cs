@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ArrayListHomeTask
 {
@@ -12,19 +10,19 @@ namespace ArrayListHomeTask
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            Console.WriteLine($"Читаем в список строки из файла: {string.Join(", ", Utils.GetStringsFromFileList("1.txt"))}");
-
+            Console.WriteLine($"Читаем в список строки из файла: {string.Join(", ", Utils.GetStringsListFromFile("1.txt"))}");
             Console.WriteLine();
 
-            List<int> list = new List<int> { 1, 2, 3, 2, 2, 2, 3, 4, 4, 4, 4, 4, 5, 5 };
+            List<int> numbers = new List<int> { 1, 2, 3, 2, 2, 2, 3, 4, 4, 4, 4, 4, 5, 5 };
 
-            Utils.RemoveEvenNumbers(list);
+            Utils.RemoveEvenNumbers(numbers);
 
-            Console.WriteLine($"Список без четных элементов: { string.Join(", ", list)}");
-
+            Console.WriteLine($"Список нечетных чисел: {string.Join(", ", numbers)}");
             Console.WriteLine();
 
-            Console.WriteLine($"Список без повторяющихся элементов: { string.Join(", ", Utils.GetWithoutDuplicateItemsList(list))}");
+            List<int> listWithDuplicates = new List<int> { 1, 2, 3, 3, 4, 5, 5, 5, 6 };
+
+            Console.WriteLine($"Список без повторяющихся элементов: {string.Join(", ", Utils.GetItemsListWithoutDuplicates(listWithDuplicates))}");
 
             Console.ReadKey();
         }
