@@ -18,16 +18,14 @@ namespace MatrixTask
 
             double[,] array1 = new double[,]
             {
-                { 4, 2 },
-                { 1, 2 },
-                { 7, 1 }
+                { 4, 2},
+                { 5, 9},
+                { 3, 5}
             };
 
             double[] array2 = new double[] { 3, 4, 1 };
-
             double[] array4 = new double[] { 6, 6, 8, 9, 9, 8 };
-
-            double[] array3 = new double[] {1 };
+            double[] array3 = new double[] { 1 };
 
             Vector[] vectors = new Vector[]
             {
@@ -36,13 +34,12 @@ namespace MatrixTask
                 new Vector(array4)
             };
 
+            Matrix matrix1 = new Matrix(array);
+            Matrix matrix2 = new Matrix(array1);
 
+            matrix1.Add(matrix2);
 
-            Matrix matrix = new Matrix(array1);
-
-            matrix.Transpose();
-
-            Console.WriteLine(matrix);
+            Console.WriteLine(matrix1);
         }
     }
 }
