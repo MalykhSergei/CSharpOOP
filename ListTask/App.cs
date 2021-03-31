@@ -7,18 +7,20 @@ namespace ListTask
         static void Main(string[] args)
         {
             LinkedList<int> list1 = new LinkedList<int>();
-            LinkedList<int> list2 = new LinkedList<int>();
+            _ = new LinkedList<int>();
 
             list1.Add(2);
             list1.Add(3);
-            list1.Add(12);
+            list1.AddFirst(12);
             list1.Add(120);
-            list1.Add(1);
-            list1.Add(15);
-            list1.Add(45);
-            list1.Add(456);
 
-            Console.WriteLine(list1);
+            Console.WriteLine(list1.RemoveByValue(2));
+
+            LinkedList<int> list2 = list1.Copy();
+
+            list2.Add(4);
+
+            Console.WriteLine(list2);
         }
     }
 }
