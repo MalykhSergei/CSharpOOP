@@ -9,7 +9,7 @@ namespace ArrayListTask
     {
         private T[] array;
         private int changesCount;
-        private const int defaultCapacity = 4;
+        private const int DefaultCapacity = 4;
 
         public int Count { get; private set; }
 
@@ -30,7 +30,7 @@ namespace ArrayListTask
             }
         }
 
-        public ArrayList() : this(defaultCapacity) { }
+        public ArrayList() : this(DefaultCapacity) { }
 
         public ArrayList(int capacity)
         {
