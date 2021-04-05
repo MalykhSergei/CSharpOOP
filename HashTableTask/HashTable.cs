@@ -1,70 +1,84 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 namespace HashTableTask
 {
     public class HashTable<T> : ICollection<T>
     {
-        private List<T>[] elements;
-        private int changes;
-
-        public HashTable(int capacity)
-        {
-            elements = new List<T>[capacity];
-        }
+        private List<T>[] lists;
+        private int changesCount;
+        private const int defaultArrayLenght = 10;
 
         public int Count { get; private set; }
 
-        public bool IsReadOnly
+        public bool IsReadOnly => false;
+
+        public HashTable()
         {
-            get { return false; }
+            lists = new List<T>[defaultArrayLenght];
         }
 
-        public int GetIndex(T item)
+        public HashTable(int arrayLenght)
+        {
+            if (arrayLenght < 1)
+            {
+                throw new ArgumentException($"{nameof(arrayLenght)} = 0. It must be greater than 0");
+            }
+
+            lists = new List<T>[arrayLenght];
+        }
+
+        private int GetIndex(T item)
         {
             if (item == null)
             {
                 return 0;
             }
 
-            return Math.Abs(item.GetHashCode() % elements.Length);
+            return Math.Abs(item.GetHashCode() % lists.Length);
         }
 
         public void Add(T item)
         {
             int index = GetIndex(item);
 
-            if (elements[index] == null)
+            if (lists[index] == null)
             {
-                elements[index] = new List<T>() { item };
+                lists[index] = new List<T> { item };
             }
             else
             {
-                elements[index].Add(item);
+                lists[index].Add(item);
             }
 
             Count++;
-            changes++;
+            changesCount++;
         }
 
         public void Clear()
         {
             if (Count != 0)
             {
-                elements = new List<T>[elements.Length];
-                Count = 0;
-                changes++;
+                for (int i = 0; i < lists.Length; i++)
+                {
+                    lists[i] = null;
+                }
+
+                changesCount++;
             }
+
+            Count = 0;
         }
 
         public bool Contains(T item)
         {
             int index = GetIndex(item);
 
-            if (elements[index] != null)
+            if (lists[index] != null)
             {
-                return elements[index].Contains(item);
+                return lists[index].Contains(item);
             }
 
             return false;
@@ -85,10 +99,12 @@ namespace HashTableTask
                 throw new ArgumentException("Insufficient size of the transmitted array");
             }
 
-            foreach (T element in this)
+            int i = arrayIndex;
+
+            foreach (T item in this)
             {
-                array[arrayIndex] = element;
-                arrayIndex++;
+                array[i] = item;
+                i++;
             }
         }
 
@@ -96,9 +112,17 @@ namespace HashTableTask
         {
             int index = GetIndex(item);
 
-            if (elements[index] != null)
+            if (lists[index] == null)
             {
-                return elements[index].Remove(item);
+                return false;
+            }
+
+            if (lists[index].Remove(item))
+            {
+                Count--;
+                changesCount++;
+
+                return true;
             }
 
             return false;
@@ -106,20 +130,20 @@ namespace HashTableTask
 
         public IEnumerator<T> GetEnumerator()
         {
-            int initialChanges = changes;
+            int initialChanges = changesCount;
 
-            for (int i = 0; i < elements.Length; i++)
+            foreach (var list in lists)
             {
-                if (elements[i] != null)
+                if (list != null)
                 {
-                    foreach (T element in elements[i])
+                    foreach (T item in list)
                     {
-                        if (initialChanges != changes)
+                        if (initialChanges != changesCount)
                         {
                             throw new InvalidOperationException("The hash table was changed during iteration");
                         }
 
-                        yield return element;
+                        yield return item;
                     }
                 }
             }
@@ -128,6 +152,37 @@ namespace HashTableTask
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            if (lists.Length == 0)
+            {
+                throw new ArgumentException("Hashtable is empty!", nameof(Count));
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < lists.Length; i++)
+            {
+                sb.Append(i).Append(": ");
+
+                if (lists[i] == null)
+                {
+                    sb.Append("null");
+                }
+                else
+                {
+                    sb.Append(string.Join(", ", lists[i]));
+                }
+
+                if (i != lists.Length - 1)
+                {
+                    sb.Append(Environment.NewLine);
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }
