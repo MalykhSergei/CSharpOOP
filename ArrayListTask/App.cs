@@ -8,9 +8,8 @@ namespace ArrayListTask
         {
             ArrayList<int> list1 = new ArrayList<int>();
 
-            list1.Add(35);
-            list1.Add(3);
-            list1.Add(350);
+            list1.Add(1);
+            list1.Add(23);
 
             Console.WriteLine(list1);
         }

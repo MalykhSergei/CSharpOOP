@@ -7,9 +7,10 @@ namespace ArrayListTask
 {
     public class ArrayList<T> : IList<T>
     {
+        private const int defaultCapacity = 4;
+
         private T[] array;
         private int changesCount;
-        private const int DefaultCapacity = 4;
 
         public int Count { get; private set; }
 
@@ -23,32 +24,36 @@ namespace ArrayListTask
             {
                 if (value < Count)
                 {
-                    throw new ArgumentOutOfRangeException($"{nameof(value)} = {value}, {nameof(Count)} = {Count}. The new list size must be greater than the number of items");
+                    throw new ArgumentOutOfRangeException($"{nameof(value)}, {nameof(Count)}",
+                        $"{nameof(value)} = {value}, {nameof(Count)} = {Count}. The new list size must be greater than the number of items");
                 }
 
                 Array.Resize(ref array, value);
             }
         }
 
-        public ArrayList() : this(DefaultCapacity) { }
+        public ArrayList() : this(defaultCapacity) { }
 
         public ArrayList(int capacity)
         {
-            if (capacity >= 0)
+            if (capacity < 0)
             {
-                array = new T[capacity];
+                throw new ArgumentOutOfRangeException(nameof(capacity), $"{nameof(capacity)} = {capacity}. It must be greater than or equal to 0");
             }
-            else
-            {
-                throw new ArgumentOutOfRangeException($"{nameof(capacity)} = {capacity}. It must be greater than or equal to 0");
-            }
+
+            array = new T[capacity];
         }
 
         private void CheckIndex(int index)
         {
-            if ((index < 0) || (index >= Count))
+            if (index < 0)
             {
-                throw new ArgumentOutOfRangeException($"{nameof(index)} = { index }. Index was out of range. Must be non-negative and less than the size of the collection");
+                throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} = {index}. Index must be greater than or equal 0");
+            }
+
+            if (index >= Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} = {index}. Index must be less than {Count}");
             }
         }
 
@@ -85,9 +90,14 @@ namespace ArrayListTask
 
         public void Insert(int index, T item)
         {
-            if ((index < 0) || (index > Count))
+            if (index < 0)
             {
-                throw new ArgumentOutOfRangeException($"{nameof(index)} = {index}. Index must be within the bounds of the List");
+                throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} = {index}. Index must be greater than or equal to 0");
+            }
+
+            if (index > Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), $"{nameof(index)} = {index}. Index must be less than or equal to {Count}");
             }
 
             if (Count == Capacity)
@@ -122,6 +132,11 @@ namespace ArrayListTask
 
         private void IncreaseCapacity()
         {
+            if (array.Length == 0)
+            {
+                Capacity = defaultCapacity;
+            }
+
             Capacity *= 2;
         }
 
@@ -145,12 +160,18 @@ namespace ArrayListTask
         {
             if (array == null)
             {
-                throw new ArgumentNullException("Value cannot be null");
+                throw new ArgumentNullException(nameof(array), "Array is null");
             }
 
-            if (arrayIndex < 0 || arrayIndex + Count > array.Length)
+            if (arrayIndex < 0)
             {
-                throw new ArgumentException($"{nameof(arrayIndex)} = {arrayIndex}. The index is outside the list");
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), $"{nameof(arrayIndex)} is less than 0");
+            }
+
+            if (arrayIndex + Count > array.Length)
+            {
+                throw new ArgumentException($"The length of the array = {array.Length}. It must be less than {Count + arrayIndex} - the number of items in the list plus the initial index of the array",
+                    $"{nameof(arrayIndex)}, {nameof(Count)}");
             }
 
             Array.Copy(this.array, 0, array, arrayIndex, Count);
@@ -197,18 +218,23 @@ namespace ArrayListTask
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-
             if (array.Length == 0)
             {
-                return sb.Append("[]").ToString();
+                return "[]";
             }
+
+            StringBuilder sb = new StringBuilder();
 
             sb.Append("[");
 
-            for (int i = 0; i < Count; ++i)
+            foreach (T item in array)
             {
-                sb.Append(array[i]).Append(", ");
+                if (item == null)
+                {
+                    sb.Append("null");
+                }
+
+                sb.Append(item).Append(", ");
             }
 
             if (Count > 0)
