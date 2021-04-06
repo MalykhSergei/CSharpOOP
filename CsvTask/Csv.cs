@@ -25,12 +25,18 @@ namespace CsvTask
 
                 using StreamWriter writer = new StreamWriter(outputFileName);
 
-                writer.Write("<!DOCTYPE html> <html> <head> <meta charset=\"UTF-8\"> <title>Table</title> </head> <body> <table>");
+                writer.Write("<!DOCTYPE html> <html> <head> <meta charset=\"UTF-8\"> <title>Table</title> </head> <body>");
+                writer.Write("<table border=\"1\" cols=\"3\">");
 
                 string textCsv;
 
                 while ((textCsv = reader.ReadLine()) != null)
                 {
+                    if (textCsv.Length == 0)
+                    {
+                        continue;
+                    }
+
                     if (quoteAdded)
                     {
                         writer.Write("<br/>");
