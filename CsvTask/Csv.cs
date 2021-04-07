@@ -26,7 +26,7 @@ namespace CsvTask
                 using StreamWriter writer = new StreamWriter(outputFileName);
 
                 writer.Write("<!DOCTYPE html> <html> <head> <meta charset=\"UTF-8\"> <title>Table</title> </head> <body>");
-                writer.Write("<table border=\"1\" cols=\"3\">");
+                writer.Write("<table border=\"1\">");
 
                 string textCsv;
 
