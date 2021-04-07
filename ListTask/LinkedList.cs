@@ -48,30 +48,17 @@ namespace ListTask
 
         public void Add(T value)
         {
-            if (Count == 0)
-            {
-                AddFirst(value);
-                return;
-            }
-
-            ListItem<T> newItem = GetListItem(Count - 1);
-            newItem.Next = new ListItem<T>(value);
-
-            Count++;
+            Insert(Count, value);
         }
 
         public T this[int index]
         {
             get
             {
-                CheckIndex(index);
-
                 return GetListItem(index).Value;
             }
             set
             {
-                CheckIndex(index);
-
                 ListItem<T> item = GetListItem(index);
 
                 item.Value = value;
@@ -106,18 +93,12 @@ namespace ListTask
         {
             if (index < 0 || index > Count)
             {
-                throw new ArgumentOutOfRangeException($"Index = {index}. It must have range [0; {Count}]", nameof(index));
+                throw new ArgumentOutOfRangeException(nameof(index), $"Index = {index}. It must have range [0; {Count}]");
             }
 
             if (index == 0)
             {
                 AddFirst(value);
-                return;
-            }
-
-            if (index == Count)
-            {
-                Add(value);
                 return;
             }
 
@@ -169,9 +150,7 @@ namespace ListTask
 
         public void Reverse()
         {
-            CheckListIsEmpty();
-
-            if (Count < 1)
+            if (head == null || Count == 1)
             {
                 return;
             }
@@ -224,14 +203,17 @@ namespace ListTask
                 return "[]";
             }
 
+            ListItem<T> item = head;
+
             StringBuilder sb = new StringBuilder();
 
             sb.Append("[");
-            sb.Append(head.Value);
-            head = head.Next;
+            sb.Append(item.Value);
 
-            for (ListItem<T> item = head; item != null; item = item.Next)
+            for (int i = 0; i < Count - 1; i++)
             {
+                item = item.Next;
+
                 sb.Append(", ");
                 sb.Append(item.Value);
             }
