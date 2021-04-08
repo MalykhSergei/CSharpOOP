@@ -81,7 +81,7 @@ namespace LambdaTask
 
             Console.WriteLine("Бесконечный поток чисел Фибоначчи: ");
 
-            foreach (var item in Utils.GetFibbonacciNumbers(userNumber))
+            foreach (var item in Utils.GetFibonacciNumbersStream(userNumber))
             {
                 Console.WriteLine(item);
             }

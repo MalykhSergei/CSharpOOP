@@ -17,7 +17,7 @@ namespace LambdaTask
             }
         }
 
-        public static IEnumerable<int> GetFibbonacciNumbers(int itemsCount)
+        public static IEnumerable<int> GetFibonacciNumbersStream(int itemsCount)
         {
             int currentFibonacciNumber = 0;
             int nextFibonacciNumber = 1;
