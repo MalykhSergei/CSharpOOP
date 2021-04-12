@@ -210,7 +210,7 @@ namespace ListTask
             sb.Append("[");
             sb.Append(item.Value);
 
-            for (int i = 0; i < Count - 1; i++)
+            for (int i = 1; i < Count; i++)
             {
                 item = item.Next;
 
