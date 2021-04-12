@@ -7,27 +7,28 @@ namespace HashTableTask
 {
     public class HashTable<T> : ICollection<T>
     {
-        private List<T>[] lists;
+        private const int DefaultArrayLength = 10;
+
+        private readonly List<T>[] lists;
         private int changesCount;
-        private const int defaultArrayLenght = 10;
 
         public int Count { get; private set; }
 
         public bool IsReadOnly => false;
 
-        public HashTable()
+        public HashTable() : this(DefaultArrayLength)
         {
-            lists = new List<T>[defaultArrayLenght];
+
         }
 
-        public HashTable(int arrayLenght)
+        public HashTable(int arrayLength)
         {
-            if (arrayLenght < 1)
+            if (arrayLength < 1)
             {
-                throw new ArgumentException($"{nameof(arrayLenght)} = 0. It must be greater than 0");
+                throw new ArgumentException($"{nameof(arrayLength)} = {arrayLength}. It must be greater than 0", nameof(arrayLength));
             }
 
-            lists = new List<T>[arrayLenght];
+            lists = new List<T>[arrayLength];
         }
 
         private int GetIndex(T item)
@@ -59,42 +60,35 @@ namespace HashTableTask
 
         public void Clear()
         {
-            if (Count != 0)
+            if (Count > 0)
             {
-                for (int i = 0; i < lists.Length; i++)
-                {
-                    lists[i] = null;
-                }
+                Array.Clear(lists, 0, Count);
 
+                Count = 0;
                 changesCount++;
             }
-
-            Count = 0;
         }
 
         public bool Contains(T item)
         {
             int index = GetIndex(item);
 
-            if (lists[index] != null)
-            {
-                return lists[index].Contains(item);
-            }
-
-            return false;
+            return lists[index].Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null)
             {
-                throw new ArgumentNullException("Array is empty");
+                throw new ArgumentNullException(nameof(array), "Array is empty");
             }
-            else if (arrayIndex < 0)
+
+            if (arrayIndex < 0)
             {
-                throw new ArgumentOutOfRangeException("Index outside the bounds of the array");
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), $"{nameof(arrayIndex)} = {arrayIndex}. Index outside the bounds of the array");
             }
-            else if (arrayIndex + Count > array.Length)
+
+            if (arrayIndex + Count > array.Length)
             {
                 throw new ArgumentException("Insufficient size of the transmitted array");
             }
@@ -130,15 +124,15 @@ namespace HashTableTask
 
         public IEnumerator<T> GetEnumerator()
         {
-            int initialChanges = changesCount;
+            int initialChangesCount = changesCount;
 
-            foreach (var list in lists)
+            foreach (List<T> list in lists)
             {
                 if (list != null)
                 {
                     foreach (T item in list)
                     {
-                        if (initialChanges != changesCount)
+                        if (initialChangesCount != changesCount)
                         {
                             throw new InvalidOperationException("The hash table was changed during iteration");
                         }
@@ -156,11 +150,6 @@ namespace HashTableTask
 
         public override string ToString()
         {
-            if (lists.Length == 0)
-            {
-                throw new ArgumentException("Hashtable is empty!", nameof(Count));
-            }
-
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < lists.Length; i++)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace HashTableTask
 {
@@ -9,10 +8,6 @@ namespace HashTableTask
         {
             HashTable<int> hashTable = new HashTable<int>();
 
-            hashTable.Add(4);
-            hashTable.Add(10);
-            hashTable.Add(40);
-            hashTable.Add(41);
             hashTable.Add(4245);
             hashTable.Add(1);
             hashTable.Add(34);
