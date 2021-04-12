@@ -7,7 +7,7 @@ namespace ArrayListTask
 {
     public class ArrayList<T> : IList<T>
     {
-        private const int defaultCapacity = 4;
+        private const int DefaultCapacity = 4;
 
         private T[] array;
         private int changesCount;
@@ -24,7 +24,7 @@ namespace ArrayListTask
             {
                 if (value < Count)
                 {
-                    throw new ArgumentOutOfRangeException($"{nameof(value)}, {nameof(Count)}",
+                    throw new ArgumentOutOfRangeException($"{nameof(value)}",
                         $"{nameof(value)} = {value}, {nameof(Count)} = {Count}. The new list size must be greater than the number of items");
                 }
 
@@ -32,7 +32,7 @@ namespace ArrayListTask
             }
         }
 
-        public ArrayList() : this(defaultCapacity) { }
+        public ArrayList() : this(DefaultCapacity) { }
 
         public ArrayList(int capacity)
         {
@@ -134,7 +134,9 @@ namespace ArrayListTask
         {
             if (array.Length == 0)
             {
-                Capacity = defaultCapacity;
+                Capacity = DefaultCapacity;
+
+                return;
             }
 
             Capacity *= 2;
@@ -171,7 +173,7 @@ namespace ArrayListTask
             if (arrayIndex + Count > array.Length)
             {
                 throw new ArgumentException($"The length of the array = {array.Length}. It must be less than {Count + arrayIndex} - the number of items in the list plus the initial index of the array",
-                    $"{nameof(arrayIndex)}, {nameof(Count)}");
+                    $"{nameof(arrayIndex)}, {nameof(array)}");
             }
 
             Array.Copy(this.array, 0, array, arrayIndex, Count);
@@ -218,7 +220,7 @@ namespace ArrayListTask
 
         public override string ToString()
         {
-            if (array.Length == 0)
+            if (Count == 0)
             {
                 return "[]";
             }
@@ -237,10 +239,7 @@ namespace ArrayListTask
                 sb.Append(item).Append(", ");
             }
 
-            if (Count > 0)
-            {
-                sb.Remove(sb.Length - 2, 2);
-            }
+            sb.Remove(sb.Length - 2, 2);
 
             return sb.Append("]").ToString();
         }

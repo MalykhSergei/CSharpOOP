@@ -10,6 +10,7 @@ namespace ArrayListTask
 
             list1.Add(1);
             list1.Add(23);
+            list1.Add(12);
 
             Console.WriteLine(list1);
         }
