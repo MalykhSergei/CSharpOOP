@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using VectorTask;
 
 namespace MatrixTask
 {
@@ -15,9 +16,11 @@ namespace MatrixTask
                 { 3, 8, 5 }
             };
 
-            Matrix matrix1 = new Matrix(array);
+            double[] arr = { };
 
-            Console.WriteLine(matrix1);
+            Console.WriteLine(arr.Length);
+
+            Console.WriteLine(string.Join(", ", arr));
         }
     }
 }

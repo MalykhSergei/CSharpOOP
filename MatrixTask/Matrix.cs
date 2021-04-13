@@ -42,14 +42,9 @@ namespace MatrixTask
             int rowsCount = components.GetLength(0);
             int columnsCount = components.GetLength(1);
 
-            if (rowsCount == 0)
+            if (rowsCount == 0 || columnsCount == 0)
             {
-                throw new ArgumentException($"{nameof(rowsCount)} = 0. It must be greater than 0", nameof(rowsCount));
-            }
-
-            if (columnsCount == 0)
-            {
-                throw new ArgumentException($"{nameof(columnsCount)} = 0. It must be greater than 0", nameof(columnsCount));
+                throw new ArgumentException($"{nameof(components)} = 0. It must be greater than 0", nameof(components));
             }
 
             rows = new Vector[rowsCount];
@@ -69,7 +64,7 @@ namespace MatrixTask
         {
             if (vectors.Length == 0)
             {
-                throw new ArgumentNullException(nameof(vectors.Length), "Array is empty");
+                throw new ArgumentException(nameof(vectors), "Array is empty");
             }
 
             int maxSize = vectors[0].Size;
@@ -132,7 +127,7 @@ namespace MatrixTask
         {
             if (vector.Size != ColumnsCount)
             {
-                throw new ArgumentException($"{nameof(vector.Size)} = {vector.Size}. {nameof(ColumnsCount)} = {ColumnsCount}. The size of the vector must match the length of the matrix row!", $"{nameof(vector.Size)}, {nameof(ColumnsCount)}");
+                throw new ArgumentException($"The size of the vector = {vector.Size} must match the length of the matrix row = {ColumnsCount}!", nameof(vector));
             }
 
             CheckIndex(index, rows.Length);
@@ -197,9 +192,8 @@ namespace MatrixTask
 
         private static double[,] GetMinor(double[,] array, int index)
         {
-            int
+            int length = array.GetLength(0);
 
-            length = array.GetLength(0);
             double[,] minor = new double[length - 1, length - 1];
 
             for (int i = 0; i < length - 1; i++)
@@ -248,7 +242,7 @@ namespace MatrixTask
         {
             if (vector.Size != ColumnsCount)
             {
-                throw new ArgumentException($"{nameof(vector.Size)} = {vector.Size}. {nameof(ColumnsCount)} = {ColumnsCount}. The dimension of the vector must match the number of columns in the matrix", $"{nameof(vector.Size)}, {nameof(ColumnsCount)}");
+                throw new ArgumentException($"The dimension of the vector = {vector.Size} must match the number of columns in the matrix = {ColumnsCount}", nameof(vector));
             }
 
             Vector result = new Vector(rows.Length);
