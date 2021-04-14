@@ -1,34 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace LambdaTask
 {
     class Utils
     {
-        public static IEnumerable<double> GetSquareRootsNumbersStream(int itemsCount)
+        public static IEnumerable<int> GetNumbersStream()
         {
             int i = 0;
 
-            while (i <= itemsCount)
+            while (true)
             {
-                yield return Math.Sqrt(i);
+                yield return i;
 
                 i++;
             }
         }
 
-        public static IEnumerable<int> GetFibonacciNumbersStream(int itemsCount)
+        public static IEnumerable<int> GetFibonacciNumbersStream()
         {
             int currentFibonacciNumber = 0;
             int nextFibonacciNumber = 1;
 
-            for (int i = 0; i < itemsCount; i++)
+            while (true)
             {
-                int temp = currentFibonacciNumber;
-                currentFibonacciNumber += nextFibonacciNumber;
-                nextFibonacciNumber = temp;
-
                 yield return currentFibonacciNumber;
+
+                int temp = nextFibonacciNumber;
+                nextFibonacciNumber += currentFibonacciNumber;
+                currentFibonacciNumber = temp;
             }
         }
     }

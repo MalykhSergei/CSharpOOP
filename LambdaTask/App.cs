@@ -35,8 +35,7 @@ namespace LambdaTask
 
             var under18YearsAgePeopleList = string.Join(", ", persons
                 .Where(x => x.Age < 18)
-                .Select(x => x.Age)
-                .Average());
+                .Average(x => x.Age));
 
             Console.WriteLine($"Средний возраст людей младше 18 лет: {under18YearsAgePeopleList}");
 
@@ -44,8 +43,7 @@ namespace LambdaTask
 
             var averageAgePeople = persons
                 .GroupBy(x => x.Name, x => x.Age)
-                .ToDictionary(x => x.Key, x => x
-                .Average());
+                .ToDictionary(x => x.Key, x => x.Average());
 
             Console.WriteLine("Map: ");
 
@@ -66,24 +64,35 @@ namespace LambdaTask
             Console.WriteLine();
 
             Console.WriteLine("Введите количество элементов для вычисления: ");
-            int userNumber = Convert.ToInt32(Console.ReadLine());
+            var itemsCount = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine();
 
             Console.WriteLine("Бесконечный поток корней чисел: ");
 
-            foreach (var item in Utils.GetSquareRootsNumbersStream(userNumber))
+            var squareRootsNumbersStream = Utils.GetNumbersStream()
+                .Where(x => x < itemsCount)
+                .Select(x => Math.Sqrt(x));
+
+            foreach (var item in squareRootsNumbersStream)
             {
-                Console.WriteLine("{0:f2}", item);
+                Console.WriteLine(item);
             }
 
             Console.WriteLine();
 
             Console.WriteLine("Бесконечный поток чисел Фибоначчи: ");
 
-            foreach (var item in Utils.GetFibonacciNumbersStream(userNumber))
+            int i = 0;
+
+            foreach (var item in Utils.GetFibonacciNumbersStream())
             {
-                Console.WriteLine(item);
+                if (i < itemsCount)
+                {
+                    Console.WriteLine(item);
+                }
+
+                i++;
             }
         }
     }
