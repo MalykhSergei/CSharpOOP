@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TemperatureTask.Common;
+﻿using TemperatureTask.Common;
 
 namespace TemperatureTask.Model
 {
-    class Celsius : ITemperatureConverter
+    class Celsius : IScale
     {
+        public string Name => "Celsius";
+
         public double ConvertFromCelsius(double degree)
         {
             return degree;
@@ -17,11 +14,6 @@ namespace TemperatureTask.Model
         public double ConvertToCelsius(double degree)
         {
             return degree;
-        }
-
-        public override string ToString()
-        {
-            return "Celsius";
         }
     }
 }

@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashTableTask", "HashTableT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaTask", "LambdaTask\LambdaTask.csproj", "{43928A6E-93E7-4225-9EB2-5B7F2D89890E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureTask", "TemperatureTask\TemperatureTask.csproj", "{3D2BC763-3EF4-4015-AFCF-9F0C868DB684}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureTask", "TemperatureTask\TemperatureTask.csproj", "{6A837621-7325-442A-958D-AD4F875B4694}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,10 +71,10 @@ Global
 		{43928A6E-93E7-4225-9EB2-5B7F2D89890E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43928A6E-93E7-4225-9EB2-5B7F2D89890E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43928A6E-93E7-4225-9EB2-5B7F2D89890E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D2BC763-3EF4-4015-AFCF-9F0C868DB684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D2BC763-3EF4-4015-AFCF-9F0C868DB684}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D2BC763-3EF4-4015-AFCF-9F0C868DB684}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D2BC763-3EF4-4015-AFCF-9F0C868DB684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A837621-7325-442A-958D-AD4F875B4694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A837621-7325-442A-958D-AD4F875B4694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A837621-7325-442A-958D-AD4F875B4694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A837621-7325-442A-958D-AD4F875B4694}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
