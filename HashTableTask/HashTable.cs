@@ -73,7 +73,7 @@ namespace HashTableTask
         {
             int index = GetIndex(item);
 
-            return lists[index].Contains(item);
+            return lists[index] != null && lists[index].Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
@@ -165,11 +165,10 @@ namespace HashTableTask
                     sb.Append(string.Join(", ", lists[i]));
                 }
 
-                if (i != lists.Length - 1)
-                {
-                    sb.Append(Environment.NewLine);
-                }
+                sb.Append(Environment.NewLine);
             }
+
+            sb.Remove(sb.Length - 1, 1);
 
             return sb.ToString();
         }

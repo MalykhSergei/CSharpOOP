@@ -10,7 +10,9 @@ namespace HashTableTask
 
             hashTable.Add(4245);
             hashTable.Add(1);
-            hashTable.Add(34);
+            hashTable.Add(342);
+            hashTable.Add(424556);
+            hashTable.Add(10);
 
             Console.WriteLine(hashTable);
         }
