@@ -6,13 +6,14 @@ namespace ArrayListTask
     {
         static void Main(string[] args)
         {
-            ArrayList<int> list1 = new ArrayList<int>();
+            ArrayList<string> list = new ArrayList<string>();
 
-            list1.Add(1);
-            list1.Add(23);
-            list1.Add(12);
+            list.Add("one");
+            list.Add("two");
+            list.Add(null);
+            list.Add("four");
 
-            Console.WriteLine(list1);
+            Console.WriteLine(list);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ArrayListTask
             {
                 if (value < Count)
                 {
-                    throw new ArgumentOutOfRangeException($"{nameof(value)}",
+                    throw new ArgumentOutOfRangeException(nameof(value),
                         $"{nameof(value)} = {value}, {nameof(Count)} = {Count}. The new list size must be greater than the number of items");
                 }
 
@@ -105,7 +105,7 @@ namespace ArrayListTask
                 IncreaseCapacity();
             }
 
-            Array.Copy(array, index, array, destinationIndex: index + 1, length: Count - index);
+            Array.Copy(array, index, array, index + 1, Count - index);
 
             array[index] = item;
 
@@ -235,8 +235,12 @@ namespace ArrayListTask
                 {
                     sb.Append("null");
                 }
+                else
+                {
+                    sb.Append(item);
+                }
 
-                sb.Append(item).Append(", ");
+                sb.Append(", ");
             }
 
             sb.Remove(sb.Length - 2, 2);
