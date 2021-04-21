@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using VectorTask;
 
 namespace MatrixTask
 {
@@ -10,17 +9,15 @@ namespace MatrixTask
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            double[,] array = new double[,]
+            double[,] array =
             {
                 { 2, 4, 3 },
                 { 3, 8, 5 }
             };
 
-            double[] arr = { };
+            Matrix matrix = new Matrix(array);
 
-            Console.WriteLine(arr.Length);
-
-            Console.WriteLine(string.Join(", ", arr));
+            Console.WriteLine(matrix);
         }
     }
 }
