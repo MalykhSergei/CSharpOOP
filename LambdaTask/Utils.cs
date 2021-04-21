@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LambdaTask
 {
     class Utils
     {
-        public static IEnumerable<int> GetNumbersStream()
+        public static IEnumerable<double> GetSquareRootsNumbersStream()
         {
             int i = 0;
 
             while (true)
             {
-                yield return i;
+                yield return Math.Sqrt(i);
 
                 i++;
             }

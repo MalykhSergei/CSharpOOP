@@ -70,29 +70,18 @@ namespace LambdaTask
 
             Console.WriteLine("Бесконечный поток корней чисел: ");
 
-            var squareRootsNumbersStream = Utils.GetNumbersStream()
-                .Where(x => x < itemsCount)
-                .Select(x => Math.Sqrt(x));
-
-            foreach (var item in squareRootsNumbersStream)
+            foreach (var item in Utils.GetSquareRootsNumbersStream().Take(itemsCount))
             {
-                Console.WriteLine(item);
+                Console.WriteLine("{0:f2}", item);
             }
 
             Console.WriteLine();
 
             Console.WriteLine("Бесконечный поток чисел Фибоначчи: ");
 
-            int i = 0;
-
-            foreach (var item in Utils.GetFibonacciNumbersStream())
+            foreach (var item in Utils.GetFibonacciNumbersStream().Take(itemsCount))
             {
-                if (i < itemsCount)
-                {
-                    Console.WriteLine(item);
-                }
-
-                i++;
+                Console.WriteLine(item);
             }
         }
     }
