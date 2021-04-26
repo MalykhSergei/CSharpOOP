@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambdaTask", "LambdaTask\La
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureTask", "TemperatureTask\TemperatureTask.csproj", "{6A837621-7325-442A-958D-AD4F875B4694}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeTask", "TreeTask\TreeTask.csproj", "{42F9E037-7CAC-4560-92D5-49F154B6788B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{6A837621-7325-442A-958D-AD4F875B4694}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A837621-7325-442A-958D-AD4F875B4694}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A837621-7325-442A-958D-AD4F875B4694}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42F9E037-7CAC-4560-92D5-49F154B6788B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42F9E037-7CAC-4560-92D5-49F154B6788B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42F9E037-7CAC-4560-92D5-49F154B6788B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42F9E037-7CAC-4560-92D5-49F154B6788B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
