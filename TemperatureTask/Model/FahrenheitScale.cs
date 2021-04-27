@@ -1,11 +1,7 @@
-﻿using TemperatureTask.Common;
-
-namespace TemperatureTask.Model
+﻿namespace TemperatureTask.Model
 {
-    class Fahrenheit : IScale
+    class FahrenheitScale : IScale
     {
-        public string Name => "Fahrenheit";
-
         public double ConvertFromCelsius(double degree)
         {
             return degree * 1.8 + 32;
@@ -14,6 +10,11 @@ namespace TemperatureTask.Model
         public double ConvertToCelsius(double degree)
         {
             return (degree - 32) * 5 / 9;
+        }
+
+        public override string ToString()
+        {
+            return "Fahrenheit";
         }
     }
 }

@@ -1,11 +1,7 @@
-﻿using TemperatureTask.Common;
-
-namespace TemperatureTask.Model
+﻿namespace TemperatureTask.Model
 {
-    class Celsius : IScale
+    class CelsiusScale : IScale
     {
-        public string Name => "Celsius";
-
         public double ConvertFromCelsius(double degree)
         {
             return degree;
@@ -14,6 +10,11 @@ namespace TemperatureTask.Model
         public double ConvertToCelsius(double degree)
         {
             return degree;
+        }
+
+        public override string ToString()
+        {
+            return "Celsius";
         }
     }
 }

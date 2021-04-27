@@ -1,9 +1,7 @@
-﻿namespace TemperatureTask.Common
+﻿namespace TemperatureTask.Model
 {
     interface IScale
     {
-        string Name { get; }
-
         double ConvertToCelsius(double degree);
 
         double ConvertFromCelsius(double degree);

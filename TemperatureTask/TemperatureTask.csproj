@@ -54,11 +54,11 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="App.cs" />
-    <Compile Include="Model\Celsius.cs" />
-    <Compile Include="Model\Fahrenheit.cs" />
-    <Compile Include="Common\IScale.cs" />
-    <Compile Include="Model\Kelvin.cs" />
-    <Compile Include="Common\TemperatureConverter.cs" />
+    <Compile Include="Model\CelsiusScale.cs" />
+    <Compile Include="Model\FahrenheitScale.cs" />
+    <Compile Include="Model\IScale.cs" />
+    <Compile Include="Model\KelvinScale.cs" />
+    <Compile Include="Model\ScalesList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Gui\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
