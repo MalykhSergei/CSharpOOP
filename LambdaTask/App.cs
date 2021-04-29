@@ -11,7 +11,7 @@ namespace LambdaTask
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            List<Person> persons = new List<Person>
+            var persons = new List<Person>
             {
                 new Person("John", 25),
                 new Person("Stefani", 34),
