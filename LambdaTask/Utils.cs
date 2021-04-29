@@ -7,7 +7,7 @@ namespace LambdaTask
     {
         public static IEnumerable<double> GetSquareRootsNumbersStream()
         {
-            int i = 0;
+            var i = 0;
 
             while (true)
             {
@@ -19,14 +19,14 @@ namespace LambdaTask
 
         public static IEnumerable<int> GetFibonacciNumbersStream()
         {
-            int currentFibonacciNumber = 0;
-            int nextFibonacciNumber = 1;
+            var currentFibonacciNumber = 0;
+            var nextFibonacciNumber = 1;
 
             while (true)
             {
                 yield return currentFibonacciNumber;
 
-                int temp = nextFibonacciNumber;
+                var temp = nextFibonacciNumber;
                 nextFibonacciNumber += currentFibonacciNumber;
                 currentFibonacciNumber = temp;
             }
