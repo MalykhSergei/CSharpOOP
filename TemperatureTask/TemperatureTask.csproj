@@ -58,7 +58,7 @@
     <Compile Include="Model\FahrenheitScale.cs" />
     <Compile Include="Model\IScale.cs" />
     <Compile Include="Model\KelvinScale.cs" />
-    <Compile Include="Model\ScalesList.cs" />
+    <Compile Include="Model\TemperatureConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Gui\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

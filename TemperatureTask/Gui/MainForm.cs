@@ -8,11 +8,11 @@ namespace TemperatureTask
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        readonly TemperatureConverter converter = new TemperatureConverter();
+
+        public MainForm(List<IScale> scales)
         {
             InitializeComponent();
-
-            List<IScale> scales = ScalesList.GetScalesList();
 
             foreach (IScale scale in scales)
             {
@@ -34,7 +34,7 @@ namespace TemperatureTask
                 IScale fromScale = (IScale)fromScaleComboBox.SelectedItem;
                 IScale toScale = (IScale)toScaleComboBox.SelectedItem;
 
-                resultLabel.Text = fromScale.ConvertToCelsius(toScale.ConvertFromCelsius(temperature)).ToString("0.00");
+                resultLabel.Text = converter.ConvertTemperature(fromScale, toScale, temperature).ToString("0.00");
             }
             catch (FormatException)
             {
