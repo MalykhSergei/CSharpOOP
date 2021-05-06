@@ -29,11 +29,7 @@ namespace GraphTask
             Graph graph1 = new Graph(matrix2);
             Graph graph2 = new Graph(matrix1);
 
-            graph1.PassInWidth(Console.WriteLine);
-
-            Console.WriteLine();
-
-            graph2.PassInDepth(Console.WriteLine);
+            graph1.PassInDepth(Console.WriteLine);
         }
     }
 }
