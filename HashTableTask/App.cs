@@ -6,13 +6,15 @@ namespace HashTableTask
     {
         static void Main(string[] args)
         {
-            HashTable<int> hashTable = new HashTable<int>();
+            HashTable<int> hashTable = null;
 
-            hashTable.Add(4245);
-            hashTable.Add(1);
-            hashTable.Add(342);
-            hashTable.Add(424556);
-            hashTable.Add(10);
+            hashTable.Remove(3);
+
+            //hashTable.Add(4245);
+            //hashTable.Add(1);
+            //hashTable.Add(342);
+            //hashTable.Add(424556);
+            //hashTable.Add(10);
 
             Console.WriteLine(hashTable);
         }
