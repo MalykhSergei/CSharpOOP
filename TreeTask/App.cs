@@ -10,7 +10,7 @@ namespace TreeTask
 
             tree.Add(12);
             tree.Add(21);
-            tree.Add(7);
+            tree.Add(6);
             tree.Add(10);
             tree.Add(1);
             tree.Add(30);
