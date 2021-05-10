@@ -11,78 +11,62 @@ namespace TreeTask
 
         public int Count { get; private set; }
 
-        public BinaryTree() : this(Comparer<T>.Default)
+        public BinaryTree()
         {
-
+            comparer = Comparer<T>.Default;
         }
 
         public BinaryTree(IComparer<T> comparer)
         {
-            this.comparer = comparer ?? throw new ArgumentNullException("Tree is empty!");
-        }
-
-        private int ResultCompare(T data, T data2)
-        {
-            if (data == null && data2 == null)
-            {
-                return 0;
-            }
-            else if (data != null && data2 == null)
-            {
-                return 1;
-            }
-            else if (data == null)
-            {
-                return -1;
-            }
-            else
-            {
-                int result;
-                if (comparer != null)
-                {
-                    result = comparer.Compare(data, data2);
-                }
-                else
-                {
-                    IComparable<T> comparable = (IComparable<T>)data;
-                    result = comparable.CompareTo(data2);
-                }
-                return result;
-            }
+            this.comparer = comparer ?? throw new ArgumentNullException("Comparer is null");
         }
 
         public void Add(T data)
         {
+            if (data == null)
+            {
+                throw new ArgumentNullException(nameof(data), "Element value is null");
+            }
+
             if (root == null)
             {
                 root = new TreeNode<T>(data);
+                Count++;
+
                 return;
             }
 
             TreeNode<T> currentNode = root;
-            TreeNode<T> parentNode;
 
-            while (currentNode != null)
+            while (true)
             {
-                parentNode = currentNode;
-
-                if (ResultCompare(data, currentNode.Data) < 0)
+                if (comparer.Compare(currentNode.Data, data) < 0)
                 {
-                    currentNode = currentNode.Left;
-
-                    if (currentNode == null)
+                    if (currentNode.Left != null)
                     {
-                        parentNode.Left = new TreeNode<T>(data);
+                        currentNode = currentNode.Left;
+                        continue;
                     }
+                    else
+                    {
+                        currentNode.Left = new TreeNode<T>(data);
+                        Count++;
+
+                        return;
+                    }
+                }
+
+                if (currentNode.Right != null)
+                {
+                    currentNode = currentNode.Right;
+                    continue;
                 }
                 else
                 {
-                    currentNode = currentNode.Right;
+                    currentNode.Right = new TreeNode<T>(data);
+                    Count++;
 
-                    if (currentNode == null)
-                    {
-                        parentNode.Right = new TreeNode<T>(data);
-                    }
+                    return;
                 }
             }
         }
@@ -96,21 +80,22 @@ namespace TreeTask
 
             TreeNode<T> currentNode = root;
 
-            while (true)
-            {
-                int result = ResultCompare(data, currentNode.Data);
+            int comparerResult = comparer.Compare(currentNode.Data, data);
 
-                if (result < 0)
+            if (comparerResult == 0)
+            {
+                return true;
+            }
+
+            while (comparerResult != 0)
+            {
+                if (comparerResult < 0)
                 {
                     currentNode = currentNode.Left;
                 }
-                else if (result > 0)
-                {
-                    currentNode = currentNode.Right;
-                }
                 else
                 {
-                    break;
+                    currentNode = currentNode.Right;
                 }
 
                 if (currentNode == null)
@@ -132,7 +117,7 @@ namespace TreeTask
             Queue<TreeNode<T>> queue = new Queue<TreeNode<T>>();
             queue.Enqueue(root);
 
-            while (queue.Count > 0)
+            while (queue.Count != 0)
             {
                 TreeNode<T> currentNode = queue.Dequeue();
 
@@ -158,46 +143,28 @@ namespace TreeTask
             }
 
             Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
-            TreeNode<T> currentNode = root;
+            stack.Push(root);
 
-            while (stack.Count > 0 || currentNode != null)
+            while (stack.Count != 0)
             {
-                if (currentNode == null)
-                {
-                    currentNode = stack.Pop();
+                TreeNode<T> currentNode = stack.Pop();
 
-                    if (stack.Count > 0 && currentNode.Right == stack.Peek())
-                    {
-                        stack.Pop();
-                        stack.Push(currentNode);
-                        currentNode = currentNode.Right;
-                    }
-                    else
-                    {
-                        yield return currentNode.Data;
-                        currentNode = null;
-                    }
+                yield return currentNode.Data;
+
+                if (currentNode.Left != null)
+                {
+                    stack.Push(currentNode.Left);
                 }
-                else
-                {
-                    if (currentNode.Right != null)
-                    {
-                        stack.Push(currentNode.Right);
-                    }
 
-                    stack.Push(currentNode);
-                    currentNode = currentNode.Left;
+                if (currentNode.Right != null)
+                {
+                    stack.Push(currentNode.Right);
                 }
             }
         }
 
-        private static void VisitNode(TreeNode<T> node, Action<T> action)
+        private void VisitNode(TreeNode<T> node, Action<T> action)
         {
-            if (action == null)
-            {
-                throw new ArgumentNullException("Action is null");
-            }
-
             action(node.Data);
 
             if (node.Left != null)
@@ -213,12 +180,7 @@ namespace TreeTask
 
         public void PassInDepthWithRecursion(Action<T> action)
         {
-            if (action == null)
-            {
-                throw new ArgumentNullException("Action is null");
-            }
-
-            if (root == null)
+            if (Count == 0)
             {
                 return;
             }
@@ -226,131 +188,121 @@ namespace TreeTask
             VisitNode(root, action);
         }
 
-        public bool Remove(T data)
+        public bool Remove(T value)
         {
-            if (root == null)
+            if (!Contains(value))
             {
                 return false;
             }
 
             TreeNode<T> currentNode = root;
-            TreeNode<T> parentNode = null;
+            TreeNode<T> parentNode = new TreeNode<T>();
+            bool rightTransfer = false;
+            int compareResult = comparer.Compare(currentNode.Data, value);
 
-            while (true)
+            while (currentNode.Data != null)
             {
-                int result = ResultCompare(data, currentNode.Data);
+                if (compareResult == 0)
+                {
+                    if (currentNode == root)
+                    {
+                        TreeNode<T> rootOfRightSubTree = currentNode.Right;
+                        TreeNode<T> roorOfLeftSubTree = currentNode.Left;
 
-                if (result < 0)
-                {
-                    parentNode = currentNode;
-                    currentNode = currentNode.Left;
-                }
-                else if (result > 0)
-                {
-                    parentNode = currentNode;
-                    currentNode = currentNode.Right;
-                }
-                else
-                {
+                        currentNode = currentNode.Right;
+
+                        while (currentNode.Left != null)
+                        {
+                            parentNode = currentNode;
+                            currentNode = currentNode.Left;
+                        }
+
+                        parentNode.Left = null;
+                        root = currentNode;
+                        currentNode.Right = rootOfRightSubTree;
+                        currentNode.Left = roorOfLeftSubTree;
+                    }
+                    else if (currentNode.Left == null && currentNode.Right == null)
+                    {
+                        if (rightTransfer)
+                        {
+                            parentNode.Right = null;
+                        }
+                        else
+                        {
+                            parentNode.Left = null;
+                        }
+                    }
+                    else if (currentNode.Left == null || currentNode.Right == null)
+                    {
+                        if (rightTransfer)
+                        {
+                            parentNode.Right = currentNode.Right ?? currentNode.Left;
+                        }
+                        else
+                        {
+                            parentNode.Left = currentNode.Right ?? currentNode.Left;
+                        }
+                    }
+                    else
+                    {
+                        TreeNode<T> subtreeParent = parentNode;
+                        TreeNode<T> rightSubtreeRoot = currentNode.Right;
+                        TreeNode<T> leftSubtreeRoot = currentNode.Left;
+
+                        currentNode = currentNode.Right;
+
+                        while (currentNode.Left != null)
+                        {
+                            parentNode = currentNode;
+                            currentNode = currentNode.Left;
+                        }
+
+                        parentNode.Left = null;
+
+                        if (rightTransfer)
+                        {
+                            subtreeParent.Right = currentNode;
+                        }
+                        else
+                        {
+                            subtreeParent.Left = currentNode;
+                        }
+
+                        currentNode.Right = rightSubtreeRoot;
+                        currentNode.Left = leftSubtreeRoot;
+                    }
+
                     break;
                 }
 
-                if (currentNode == null)
+                if (compareResult < 0)
                 {
-                    return false;
-                }
-            }
-
-            if (currentNode.Right == null)
-            {
-                if (currentNode == root)
-                {
-                    root = currentNode.Left;
+                    if (currentNode.Left != null)
+                    {
+                        parentNode = currentNode;
+                        rightTransfer = false;
+                        currentNode = currentNode.Left;
+                    }
                 }
                 else
                 {
-                    if (parentNode != null)
+                    if (currentNode.Right != null)
                     {
-                        if (ResultCompare(parentNode.Data, currentNode.Data) > 0)
-                        {
-                            parentNode.Left = currentNode.Left;
-                        }
-                        else
-                        {
-                            parentNode.Right = currentNode.Left;
-                        }
+                        parentNode = currentNode;
+                        rightTransfer = true;
+                        currentNode = currentNode.Right;
                     }
                 }
             }
-            else if (currentNode.Right.Left == null)
-            {
-                currentNode.Right.Left = currentNode.Left;
 
-                if (currentNode == root)
-                {
-                    root = currentNode.Right;
-                }
-                else
-                {
-                    if (parentNode != null)
-                    {
-                        if (ResultCompare(parentNode.Data, currentNode.Data) > 0)
-                        {
-                            parentNode.Left = currentNode.Right;
-                        }
-                        else
-                        {
-                            parentNode.Right = currentNode.Right;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                TreeNode<T> minNode = currentNode.Right.Left;
-                TreeNode<T> previousNode = currentNode.Right;
-
-                while (minNode.Left != null)
-                {
-                    previousNode = minNode;
-                    minNode = minNode.Left;
-                }
-
-                previousNode.Left = minNode.Right;
-
-                minNode.Left = currentNode.Left;
-                minNode.Right = currentNode.Right;
-
-                if (currentNode == root)
-                {
-                    root = minNode;
-                }
-                else
-                {
-                    if (parentNode != null)
-                    {
-                        if (ResultCompare(parentNode.Data, currentNode.Data) > 0)
-                        {
-                            parentNode.Left = minNode;
-                        }
-                        else
-                        {
-                            parentNode.Right = minNode;
-                        }
-                    }
-                }
-            }
+            Count--;
 
             return true;
         }
 
         public override string ToString()
         {
-            if (root == null)
-            {
-                return " ";
-            }
-
             StringBuilder sb = new StringBuilder();
 
             foreach (var item in PassInWidth())
