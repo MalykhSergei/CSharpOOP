@@ -6,12 +6,12 @@ namespace ListTask
     {
         static void Main(string[] args)
         {
-            LinkedList<int> list1 = new LinkedList<int>();
+            LinkedList<int> list1 = null;
 
-            list1.Add(2);
-            list1.AddFirst(1);
+            //list1.Add(2);
+            //list1.AddFirst(1);
 
-            list1.Insert(2, 10);
+            //list1.Insert(2, 10);
 
             Console.WriteLine(list1);
         }
