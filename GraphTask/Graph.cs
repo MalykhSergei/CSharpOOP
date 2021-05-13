@@ -9,13 +9,13 @@ namespace GraphTask
 
         public Graph(int[,] graph)
         {
-            int rowsCount = graph.GetLength(0);
-            int columnsCount = graph.GetLength(1);
-
             if (graph is null)
             {
                 throw new ArgumentNullException(nameof(graph), "Graph is empty!");
             }
+
+            int rowsCount = graph.GetLength(0);
+            int columnsCount = graph.GetLength(1);
 
             if (rowsCount == 0)
             {
@@ -37,6 +37,11 @@ namespace GraphTask
 
         public void PassInWidth(Action<int> action)
         {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action), "Action is null");
+            }
+
             Queue<int> queue = new Queue<int>();
             bool[] visited = new bool[graph.Length];
 
@@ -91,6 +96,11 @@ namespace GraphTask
 
         public void PassInDepth(Action<int> action)
         {
+            if (graph is null)
+            {
+                throw new ArgumentNullException(nameof(graph), "Graph is null");
+            }
+
             if (action is null)
             {
                 throw new ArgumentNullException(nameof(action), "Action is null");

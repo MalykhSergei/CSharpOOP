@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace GraphTask
 {
     class App
@@ -26,10 +27,11 @@ namespace GraphTask
                 { 1, 0, 0, 0, 0, 0, 0}
             };
 
-            Graph graph1 = new Graph(matrix2);
-            Graph graph2 = new Graph(matrix1);
+            int[,] matrix3 = null;
 
-            graph1.PassInDepth(Console.WriteLine);
+            Graph graph = new Graph(matrix3);
+
+            graph.PassInDepth(Console.WriteLine);
         }
     }
 }
