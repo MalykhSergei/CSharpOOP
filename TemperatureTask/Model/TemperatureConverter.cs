@@ -1,6 +1,6 @@
 ﻿namespace TemperatureTask.Model
 {
-    class TemperatureConverter
+    public class TemperatureConverter : ITemperatureConverter
     {
         public double ConvertTemperature(IScale fromScale, IScale toScale, double temperature)
         {

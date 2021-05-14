@@ -20,9 +20,11 @@ namespace TemperatureTask
                 new FahrenheitScale()
             };
 
+            ITemperatureConverter converter = new TemperatureConverter();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm(scales));
+            Application.Run(new MainForm(scales, converter));
         }
     }
 }

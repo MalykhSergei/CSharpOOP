@@ -8,9 +8,9 @@ namespace TemperatureTask
 {
     public partial class MainForm : Form
     {
-        readonly TemperatureConverter converter = new TemperatureConverter();
+        private readonly ITemperatureConverter converter;
 
-        public MainForm(List<IScale> scales)
+        public MainForm(List<IScale> scales, ITemperatureConverter converter)
         {
             InitializeComponent();
 
@@ -22,6 +22,8 @@ namespace TemperatureTask
 
             fromScaleComboBox.SelectedIndex = 0;
             toScaleComboBox.SelectedIndex = 0;
+
+            this.converter = converter;
         }
 
         private void CalculateButton_Click(object sender, EventArgs e)

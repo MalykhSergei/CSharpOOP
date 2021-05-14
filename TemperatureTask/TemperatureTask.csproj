@@ -57,6 +57,7 @@
     <Compile Include="Model\CelsiusScale.cs" />
     <Compile Include="Model\FahrenheitScale.cs" />
     <Compile Include="Model\IScale.cs" />
+    <Compile Include="Model\ITemperatureConverter.cs" />
     <Compile Include="Model\KelvinScale.cs" />
     <Compile Include="Model\TemperatureConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
