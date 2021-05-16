@@ -96,11 +96,6 @@ namespace GraphTask
 
         public void PassInDepth(Action<int> action)
         {
-            if (graph is null)
-            {
-                throw new ArgumentNullException(nameof(graph), "Graph is null");
-            }
-
             if (action is null)
             {
                 throw new ArgumentNullException(nameof(action), "Action is null");
