@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace MinesweeperTask
 {
     public partial class Form1 : Form
     {
-        private MineField mineField;
+        private readonly MineField mineField = new MineField(16, 16, 40);
         private Cell cell;
 
         public Form1()
@@ -30,8 +31,6 @@ namespace MinesweeperTask
 
         private void PrintField()
         {
-            mineField = new MineField(14, 14);
-
             tablePanel.ColumnCount = mineField.Width;
             tablePanel.RowCount = mineField.Height;
 
@@ -46,11 +45,84 @@ namespace MinesweeperTask
                     cell.Dock = DockStyle.Fill;
                     cell.Margin = new Padding(0);
 
+                    //if (!cell.IsOpened)
+                    //{
+                    //    cell.Text = "";
+                    //}
+                    //else
+                    //{
+                    //    if (cell.HasFlag)
+                    //    {
+                    //        cell.Text = "P";
+                    //    }
+                    //    else if (cell.HasQuestion)
+                    //    {
+                    //        cell.Text = "?";
+                    //    }
+                    //    else if (cell.IsMine)
+                    //    {
+                    //        cell.Text = "*";
+                    //    }
+                    //    else
+                    //    {
+                    //        cell.Text = cell.NeighborsWithMineCount.ToString();
+                    //    }
+                    //}
+
+                    cell.MouseUp += new MouseEventHandler(FieldButtonClick);
+
                     tablePanel.Controls.Add(cell);
                 }
             }
 
             ClientSize = new Size(cell.Width * mineField.Width, cell.Height * mineField.Height + flowPanel.Height);
+        }
+
+        void FieldButtonClick(object sender, MouseEventArgs e)
+        {
+            Cell cell = (Cell)sender;
+            cell.Dock = DockStyle.Fill;
+            cell.Margin = new Padding(0);
+            cell.Size = new Size(cell.Width, cell.Height);
+
+            if (e.Button == MouseButtons.Left)
+            {
+                if (cell.IsMine)
+                {
+                    cell.Text = "*";
+                    return;
+                }
+                else
+                {
+                    if (cell.NeighborsWithMineCount == 0)
+                    {
+                        Queue<Cell> queue = new Queue<Cell>();
+                        queue.Enqueue(cell);
+
+                        while (queue.Count > 0)
+                        {
+                            Cell currentCell = queue.Dequeue();
+                            currentCell.IsOpened = true;
+
+                            if (currentCell.NeighborsWithMineCount == 0)
+                            {
+                                foreach (Cell c in mineField.GetNeighbours(currentCell.X, currentCell.Y))
+                                {
+                                    if (!c.IsOpened)
+                                    {
+                                        queue.Enqueue(c);
+                                        c.Text = c.NeighborsWithMineCount.ToString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        cell.Text = cell.NeighborsWithMineCount.ToString();
+                    }
+                }
+            }
         }
     }
 }
