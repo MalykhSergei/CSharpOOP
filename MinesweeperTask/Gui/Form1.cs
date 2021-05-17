@@ -14,7 +14,7 @@ namespace MinesweeperTask
 {
     public partial class Form1 : Form
     {
-        private readonly MineField mineField = new MineField(16, 16, 40);
+        private readonly MineField mineField = new MineField(9, 9, 10);
         private Cell cell;
 
         public Form1()
@@ -45,30 +45,6 @@ namespace MinesweeperTask
                     cell.Dock = DockStyle.Fill;
                     cell.Margin = new Padding(0);
 
-                    //if (!cell.IsOpened)
-                    //{
-                    //    cell.Text = "";
-                    //}
-                    //else
-                    //{
-                    //    if (cell.HasFlag)
-                    //    {
-                    //        cell.Text = "P";
-                    //    }
-                    //    else if (cell.HasQuestion)
-                    //    {
-                    //        cell.Text = "?";
-                    //    }
-                    //    else if (cell.IsMine)
-                    //    {
-                    //        cell.Text = "*";
-                    //    }
-                    //    else
-                    //    {
-                    //        cell.Text = cell.NeighborsWithMineCount.ToString();
-                    //    }
-                    //}
-
                     cell.MouseUp += new MouseEventHandler(FieldButtonClick);
 
                     tablePanel.Controls.Add(cell);
@@ -90,7 +66,9 @@ namespace MinesweeperTask
                 if (cell.IsMine)
                 {
                     cell.Text = "*";
-                    return;
+                    MessageBox.Show("You lose!");
+
+                    Close();
                 }
                 else
                 {

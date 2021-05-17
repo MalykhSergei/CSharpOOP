@@ -83,10 +83,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\mine.gif" />
-    <Content Include="Images\sq0.gif" />
-    <Content Include="Images\sq1.gif" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
