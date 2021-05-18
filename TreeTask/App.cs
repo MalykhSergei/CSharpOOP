@@ -15,8 +15,20 @@ namespace TreeTask
             tree.Add(1);
             tree.Add(30);
             tree.Add(42);
+            tree.Add(90);
+
+            Console.WriteLine(tree.Count);
+
+            Console.WriteLine();
 
             tree.PassInDepthWithRecursion(Console.WriteLine);
+
+            Console.WriteLine();
+
+            foreach (int item in tree.PassInDepthWithoutRecursion())
+            {
+                Console.WriteLine(item);
+            }
         }
     }
 }

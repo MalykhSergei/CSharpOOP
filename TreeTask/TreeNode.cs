@@ -8,8 +8,6 @@
 
         public T Data { get; set; }
 
-        public TreeNode() { }
-
         public TreeNode(T data)
         {
             Data = data;

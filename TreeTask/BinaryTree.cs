@@ -26,17 +26,18 @@ namespace TreeTask
             if (root == null)
             {
                 root = new TreeNode<T>(data);
+                Count++;
+
                 return;
             }
 
             TreeNode<T> currentNode = root;
-            TreeNode<T> parentNode;
 
             while (currentNode != null)
             {
-                parentNode = currentNode;
+                TreeNode<T> parentNode = currentNode;
 
-                if (ResultCompare(data, currentNode.Data) < 0)
+                if (Compare(data, currentNode.Data) < 0)
                 {
                     currentNode = currentNode.Left;
 
@@ -55,38 +56,13 @@ namespace TreeTask
                     }
                 }
             }
+
+            Count++;
         }
 
-        private int ResultCompare(T nodeData1, T nodeData2)
+        private int Compare(T data1, T data2)
         {
-            if (nodeData1 == null && nodeData2 == null)
-            {
-                return 0;
-            }
-
-            if (nodeData1 != null && nodeData2 == null)
-            {
-                return 1;
-            }
-
-            if (nodeData1 == null)
-            {
-                return -1;
-            }
-
-            int result;
-
-            if (comparer != null)
-            {
-                result = comparer.Compare(nodeData1, nodeData2);
-            }
-            else
-            {
-                IComparable<T> comparable = (IComparable<T>)nodeData1;
-                result = comparable.CompareTo(nodeData2);
-            }
-
-            return result;
+            return comparer.Compare(data1, data2);
         }
 
         public bool Contains(T data)
@@ -100,7 +76,7 @@ namespace TreeTask
 
             while (true)
             {
-                int result = ResultCompare(data, currentNode.Data);
+                int result = Compare(data, currentNode.Data);
 
                 if (result < 0)
                 {
@@ -160,40 +136,27 @@ namespace TreeTask
             }
 
             Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
-            TreeNode<T> currentNode = root;
+            stack.Push(root);
 
-            while (stack.Count > 0 || currentNode != null)
+            while (stack.Count > 0)
             {
-                if (currentNode == null)
-                {
-                    currentNode = stack.Pop();
+                TreeNode<T> currentNode = stack.Pop();
 
-                    if (stack.Count > 0 && currentNode.Right == stack.Peek())
-                    {
-                        stack.Pop();
-                        stack.Push(currentNode);
-                        currentNode = currentNode.Right;
-                    }
-                    else
-                    {
-                        yield return currentNode.Data;
-                        currentNode = null;
-                    }
+                yield return currentNode.Data;
+
+                if (currentNode.Right != null)
+                {
+                    stack.Push(currentNode.Right);
                 }
-                else
-                {
-                    if (currentNode.Right != null)
-                    {
-                        stack.Push(currentNode.Right);
-                    }
 
-                    stack.Push(currentNode);
-                    currentNode = currentNode.Left;
+                if (currentNode.Left != null)
+                {
+                    stack.Push(currentNode.Left);
                 }
             }
         }
 
-        private void VisitNode(TreeNode<T> node, Action<T> action)
+        private static void VisitNode(TreeNode<T> node, Action<T> action)
         {
             if (action == null)
             {
@@ -240,7 +203,7 @@ namespace TreeTask
 
             while (true)
             {
-                int result = ResultCompare(data, currentNode.Data);
+                int result = Compare(data, currentNode.Data);
 
                 if (result < 0)
                 {
@@ -273,7 +236,7 @@ namespace TreeTask
                 {
                     if (parentNode != null)
                     {
-                        if (ResultCompare(parentNode.Data, currentNode.Data) > 0)
+                        if (Compare(parentNode.Data, currentNode.Data) > 0)
                         {
                             parentNode.Left = currentNode.Left;
                         }
@@ -296,7 +259,7 @@ namespace TreeTask
                 {
                     if (parentNode != null)
                     {
-                        if (ResultCompare(parentNode.Data, currentNode.Data) > 0)
+                        if (Compare(parentNode.Data, currentNode.Data) > 0)
                         {
                             parentNode.Left = currentNode.Right;
                         }
@@ -331,7 +294,7 @@ namespace TreeTask
                 {
                     if (parentNode != null)
                     {
-                        if (ResultCompare(parentNode.Data, currentNode.Data) > 0)
+                        if (Compare(parentNode.Data, currentNode.Data) > 0)
                         {
                             parentNode.Left = minNode;
                         }
@@ -343,6 +306,8 @@ namespace TreeTask
                 }
             }
 
+            Count--;
+
             return true;
         }
 
@@ -350,19 +315,30 @@ namespace TreeTask
         {
             if (root == null)
             {
-                return " ";
+                return "[]";
             }
 
             StringBuilder sb = new StringBuilder();
 
-            foreach (IEnumerable<T> item in PassInWidth())
+            sb.Append("[");
+
+            foreach (T item in PassInWidth())
             {
-                sb.Append(item).Append(", ");
+                if (item == null)
+                {
+                    sb.Append("null");
+                }
+                else
+                {
+                    sb.Append(item);
+                }
+
+                sb.Append(", ");
             }
 
             sb.Remove(sb.Length - 2, 2);
 
-            return sb.ToString();
+            return sb.Append("]").ToString();
         }
     }
 }
